@@ -1,5 +1,7 @@
 package file;
 
+import board.Field;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -18,7 +20,7 @@ public class FileSchema {
 
     private int xSize;
     private int ySize;
-    private List<Row> pointList = new ArrayList<>();
+    private List<Field> pointList = new ArrayList<>();
     private String pathToFile;
 
     public FileSchema(String pathToFile) throws IOException {
@@ -49,7 +51,7 @@ public class FileSchema {
                 final int yPos  = Integer.parseInt(numbers[1]);
                 final int phase = Integer.parseInt(numbers[2]);
                 final int id    = Integer.parseInt(numbers[3]);
-                pointList.add(new Row(xPos, yPos, phase, id));
+                pointList.add(new Field(xPos, yPos, phase, id));
             }
         });
     }
@@ -70,11 +72,11 @@ public class FileSchema {
         this.ySize = ySize;
     }
 
-    public List<Row> getPointList() {
+    public List<Field> getPointList() {
         return pointList;
     }
 
-    public void setPointList(List<Row> pointList) {
+    public void setPointList(List<Field> pointList) {
         this.pointList = pointList;
     }
 }
