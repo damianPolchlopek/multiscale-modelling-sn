@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Controller">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600" minWidth="800" prefHeight="600.0" prefWidth="800.0" stylesheets="@canvas.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Controller">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
@@ -25,26 +26,33 @@
       </MenuBar>
    </top>
    <center>
-      <VBox alignment="TOP_CENTER" fillWidth="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+      <Canvas fx:id="canvas" height="200.0" width="200.0" BorderPane.alignment="CENTER" />
+   </center>
+   <left>
+      <VBox fillWidth="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="375.0" prefWidth="108.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox prefHeight="100.0" prefWidth="200.0">
+            <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <Label text="xSize" />
-                  <TextField id="importField" text="xSize" fx:id="xSize" />
+                  <Label text="Size of board:" />
+                  <RadioButton fx:id="halfHundred" mnemonicParsing="false" selected="true" text="50x50">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="sizeOfBoard" />
+                     </toggleGroup></RadioButton>
+                  <RadioButton fx:id="oneHundred" mnemonicParsing="false" text="100x100" toggleGroup="$sizeOfBoard" />
+                  <RadioButton fx:id="oneAndHalfHundred" mnemonicParsing="false" text="150x150" toggleGroup="$sizeOfBoard" />
                </children>
-            </HBox>
-            <HBox prefHeight="100.0" prefWidth="200.0">
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <Label text="ySize" />
-                  <TextField id="exportField" fx:id="ySize" promptText="333" text="ySize" />
+                  <Label text="Label" />
                </children>
-            </HBox>
-            <Button mnemonicParsing="false" text="START">
+            </VBox>
+            <Button mnemonicParsing="false" onAction="#drawBoard" text="Draw Board">
                <font>
-                  <Font size="24.0" />
+                  <Font size="14.0" />
                </font>
             </Button>
          </children>
       </VBox>
-   </center>
+   </left>
 </BorderPane>
