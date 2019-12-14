@@ -40,7 +40,7 @@ public class Controller {
 
     @FXML
     public void drawBoard(){
-        System.out.println("-- Draw Board --");
+        System.out.println(" -- Draw Board -- ");
 
 //        final int boardDimension = getBoardDimension();
         final int boardDimension = 9;
