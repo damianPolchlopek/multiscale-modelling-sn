@@ -2,12 +2,13 @@ package file;
 
 import board.Field;
 
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -21,15 +22,17 @@ public class FileSchema {
     private int xSize;
     private int ySize;
     private List<Field> pointList = new ArrayList<>();
+    private Map<Integer, Color> usedColor = new HashMap<>();
     private String pathToFile;
 
     public FileSchema(String pathToFile) throws IOException {
         this.pathToFile = pathToFile;
-        parseFirstLineOfFile();
+        usedColor.put(0, Color.WHITE);
+        parseHeaderOfFile();
         addDataToPointList();
     }
 
-    private void parseFirstLineOfFile() throws IOException {
+    private void parseHeaderOfFile() throws IOException {
         final String firstLine = getFirstLineFile();
         final String[] numbers = firstLine.split(" ");
         this.xSize = Integer.parseInt(numbers[0]);
@@ -51,10 +54,36 @@ public class FileSchema {
                 final int yPos  = Integer.parseInt(numbers[1]);
                 final int phase = Integer.parseInt(numbers[2]);
                 final int id    = Integer.parseInt(numbers[3]);
-                pointList.add(new Field(xPos, yPos, phase, id));
+                final Color color = getMatchedColorToId(id);
+                pointList.add(new Field(xPos, yPos, phase, id, color));
             }
         });
     }
+
+    private Color getRandomColor(){
+        Random rand = new Random();
+        float r = rand.nextFloat();
+        float g = rand.nextFloat();
+        float b = rand.nextFloat();
+        return new Color(r, g, b);
+    }
+
+    private Color getMatchedColorToId(int fieldId){
+        final boolean isIdExist = usedColor.containsKey(fieldId);
+        Color color;
+        if (isIdExist){
+            color = usedColor.get(fieldId);
+        }
+        else {
+            color = getRandomColor();
+            usedColor.put(fieldId, color);
+        }
+        return color;
+    }
+
+
+
+
 
     public int getxSize() {
         return xSize;

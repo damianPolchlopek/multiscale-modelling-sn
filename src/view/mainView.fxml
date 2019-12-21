@@ -6,20 +6,19 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600" minWidth="800" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Controller">
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600" minWidth="800" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Controller">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
-          <Menu mnemonicParsing="false" text="file">
+          <Menu mnemonicParsing="false" text="File">
             <items>
-               <MenuItem mnemonicParsing="false" onAction="#updateImportField" text="Import" />
-               <MenuItem mnemonicParsing="false" onAction="#updateExportField" text="Export" />
+               <MenuItem mnemonicParsing="false" onAction="#importFile" text="Import" />
+               <MenuItem mnemonicParsing="false" onAction="#exportFile" text="Export" />
             </items>
           </Menu>
         </menus>
@@ -33,18 +32,12 @@
          <children>
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <Label text="Size of board:" />
-                  <RadioButton fx:id="halfHundred" mnemonicParsing="false" selected="true" text="50x50">
-                     <toggleGroup>
-                        <ToggleGroup fx:id="sizeOfBoard" />
-                     </toggleGroup></RadioButton>
-                  <RadioButton fx:id="oneHundred" mnemonicParsing="false" text="100x100" toggleGroup="$sizeOfBoard" />
-                  <RadioButton fx:id="oneAndHalfHundred" mnemonicParsing="false" text="150x150" toggleGroup="$sizeOfBoard" />
-               </children>
-            </VBox>
-            <VBox prefHeight="200.0" prefWidth="100.0">
-               <children>
-                  <Label text="Label" />
+                  <Label text="xSize" />
+                  <TextField fx:id="xSizeView" />
+                  <Label text="ySize" />
+                  <TextField fx:id="ySizeView" />
+                  <Label text="Amount of seed:" />
+                  <TextField fx:id="seedAmount" />
                </children>
             </VBox>
             <Button mnemonicParsing="false" onAction="#drawBoard" text="Draw Board">
@@ -52,6 +45,7 @@
                   <Font size="14.0" />
                </font>
             </Button>
+            <Button mnemonicParsing="false" onAction="#clearBoard" text="Clear Board" />
          </children>
       </VBox>
    </left>

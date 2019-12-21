@@ -3,7 +3,9 @@ package board;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
+
+import java.util.Arrays;
+import java.util.stream.Stream;
 
 public class Board {
 
@@ -50,7 +52,7 @@ public class Board {
         return yCurrentPosition - HEIGHT_FIELD;
     }
 
-    public void fillPixel(int xPosition, int yPosition, Paint color){
+    public void fillPixel(int xPosition, int yPosition, Color color){
         final int xRealPosition = xPosition * WIDTH_FIELD;
         final int yRealPosition = yPosition * HEIGHT_FIELD;
         this.graphicsContext.setFill(color);
@@ -71,10 +73,27 @@ public class Board {
 
         for (int i = 0; i < this.ySize; i++) {
             for (int j = 0; j < this.xSize; j++) {
-                board[j][i] = new Field(j, i, 0, 0);
+                board[j][i] = new Field(j, i, 0, 0, java.awt.Color.WHITE);
             }
         }
 
+    }
+
+    public String getBoardContent(){
+        StringBuilder boardContent = new StringBuilder();
+        Arrays.stream(board)
+                .flatMap(Stream::of)
+                .forEach((field -> boardContent.append(buildRowString(field))));
+
+        return boardContent.toString();
+    }
+
+    private String buildRowString(Field field) {
+        final String xPos = String.valueOf(field.getxPosition());
+        final String yPos = String.valueOf(field.getyPosition());
+        final String phase = String.valueOf(field.getPhase());
+        final String id = String.valueOf(field.getId());
+        return xPos + " " + yPos + " " + phase + " " + id + System.lineSeparator();
     }
 
 
