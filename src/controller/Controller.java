@@ -200,28 +200,6 @@ public class Controller extends ColorFunctionality {
         //rysowanie pikseli
         board.redraw();
 
-
-//        final int seedAmount = getSeedAmount();
-//        VonNeumann gainAlgoruthm = new VonNeumann(board, seedAmount, xBoardDimension, yBoardDimension);
-//        gainAlgoruthm.calculate();
-//
-//        // mapowanie koloru do id
-//        Arrays.stream(board.getBoard()).flatMap(Stream::of)
-//                .forEach(field ->{
-//                    final java.awt.Color color = getMatchedColorToId(field.getId());
-//                    field.setColor(color);
-//                });
-//
-//
-//        //rysowanie pikseli
-//        redraw();
-//
-//                Arrays.stream(board.getBoard()).flatMap(Stream::of)
-//                .forEach(field -> board.fillPixel(
-//                                                    field.getyPosition(),
-//                        field.getxPosition(),
-//                                                    convertAwtColorToFxColor(field.getColor())));
-
     }
 
     private int getXBoardDimension(){
