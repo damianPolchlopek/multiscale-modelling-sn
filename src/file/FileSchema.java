@@ -1,6 +1,6 @@
 package file;
 
-import helper.ColorFuncionality;
+import helper.ColorFunctionality;
 import board.Field;
 
 import java.awt.*;
@@ -15,7 +15,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-public class FileSchema extends ColorFuncionality {
+public class FileSchema extends ColorFunctionality {
 
     private final String LINE_REGEX = "\\d \\d \\d \\d";
     private final Pattern PATTERN = Pattern.compile(LINE_REGEX);

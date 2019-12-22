@@ -2,7 +2,7 @@ package controller;
 
 
 import board.Board;
-import helper.ColorFuncionality;
+import helper.ColorFunctionality;
 import file.FileSchema;
 import grainGrowthAlgorithms.GrainGrowth;
 import grainGrowthAlgorithms.VonNeumann;
@@ -20,11 +20,9 @@ import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Arrays;
-import java.util.stream.Stream;
 
 
-public class Controller extends ColorFuncionality {
+public class Controller extends ColorFunctionality {
 
     private Board board;
 
@@ -201,29 +199,6 @@ public class Controller extends ColorFuncionality {
 
         //rysowanie pikseli
         board.redraw();
-
-
-//        final int seedAmount = getSeedAmount();
-//        VonNeumann gainAlgoruthm = new VonNeumann(board, seedAmount, xBoardDimension, yBoardDimension);
-//        gainAlgoruthm.calculate();
-//
-//        // mapowanie koloru do id
-//        Arrays.stream(board.getBoard()).flatMap(Stream::of)
-//                .forEach(field ->{
-//                    final java.awt.Color color = getMatchedColorToId(field.getId());
-//                    field.setColor(color);
-//                });
-//
-//
-//        //rysowanie pikseli
-//        redraw();
-//
-//                Arrays.stream(board.getBoard()).flatMap(Stream::of)
-//                .forEach(field -> board.fillPixel(
-//                                                    field.getyPosition(),
-//                        field.getxPosition(),
-//                                                    convertAwtColorToFxColor(field.getColor())));
-
     }
 
     private int getXBoardDimension(){

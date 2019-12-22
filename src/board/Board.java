@@ -1,6 +1,6 @@
 package board;
 
-import helper.ColorFuncionality;
+import helper.ColorFunctionality;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -8,7 +8,7 @@ import javafx.scene.paint.Color;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
-public class Board extends ColorFuncionality {
+public class Board extends ColorFunctionality {
 
     private final int WIDTH_FIELD = 5;
     private final int HEIGHT_FIELD = 5;

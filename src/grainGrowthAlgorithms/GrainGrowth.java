@@ -22,6 +22,7 @@ public abstract class GrainGrowth {
 
     public abstract void calculate();
 
+
     boolean checkIfBoardFilled() {
         return Arrays.stream(board.getBoard()).flatMap(Stream::of)
                 .allMatch((field) -> field.getId() != 0);

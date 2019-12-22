@@ -23,7 +23,6 @@ public class VonNeumann extends GrainGrowth {
             //iteracja po boardzie i pierwsza iteracja
             Arrays.stream(board.getBoard()).flatMap(Stream::of)
                     .forEach(field ->{
-
                         if (field.isColoredPrevStep()){
                             // algorytm sasiedztwa
                             int xPos = field.getxPosition();

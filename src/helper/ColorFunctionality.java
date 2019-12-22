@@ -4,11 +4,11 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Random;
 
-public class ColorFuncionality {
+public class ColorFunctionality {
 
     private HashMap<Integer, Color> usedColor = new HashMap<>();
 
-    public ColorFuncionality() {
+    public ColorFunctionality() {
         usedColor.put(0, Color.WHITE);
     }
 
