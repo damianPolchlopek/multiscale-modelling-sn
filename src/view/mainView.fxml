@@ -46,6 +46,7 @@
                </font>
             </Button>
             <Button mnemonicParsing="false" onAction="#clearBoard" text="Clear Board" />
+            <Button mnemonicParsing="false" onAction="#generateBoard" text="Generate Board" />
          </children>
       </VBox>
    </left>
