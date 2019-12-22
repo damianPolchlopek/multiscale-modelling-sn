@@ -2,7 +2,10 @@ package controller;
 
 
 import board.Board;
+import helper.ColorFuncionality;
 import file.FileSchema;
+import grainGrowthAlgorithms.GrainGrowth;
+import grainGrowthAlgorithms.VonNeumann;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
@@ -17,9 +20,11 @@ import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
+import java.util.stream.Stream;
 
 
-public class Controller {
+public class Controller extends ColorFuncionality {
 
     private Board board;
 
@@ -31,6 +36,9 @@ public class Controller {
 
     @FXML
     private TextField ySizeView;
+
+    @FXML
+    private TextField seedAmount;
 
     @FXML
     private Canvas canvas;
@@ -45,7 +53,6 @@ public class Controller {
         final int xBoardDimension = fileSchema.getxSize();
         final int yBoardDimension = fileSchema.getySize();
         board = new Board(xBoardDimension, yBoardDimension, canvas);
-        board.initBoard();
 
         fileSchema.getPointList()
             .forEach(field -> {
@@ -53,17 +60,38 @@ public class Controller {
                 final int yRealPosition = field.getyPosition();
                 final java.awt.Color awtColor = field.getColor();
                 final Color fxColor = convertAwtColorToFxColor(awtColor);
+
                 board.fillPixel(xRealPosition, yRealPosition, fxColor);
             });
     }
 
-    private Color convertAwtColorToFxColor(java.awt.Color awtColor){
-        int r = awtColor.getRed();
-        int g = awtColor.getGreen();
-        int b = awtColor.getBlue();
-        int a = awtColor.getAlpha();
-        double opacity = a / 255.0;
-        return javafx.scene.paint.Color.rgb(r, g, b, opacity);
+    @FXML
+    public void generateBoard(){
+        final int seedAmount = getSeedAmount();
+        final int xBoardDimension = getXBoardDimension();
+        final int yBoardDimension = getYBoardDimension();
+
+        // stworz board
+        board = new Board(xBoardDimension, yBoardDimension, canvas);
+
+        // inicjacja algorytmu
+        GrainGrowth grainAlgorithm =
+                new VonNeumann(board,
+                                seedAmount,
+                                xBoardDimension,
+                                yBoardDimension);
+
+        // wylosuj ziarna
+        grainAlgorithm.randomSeed();
+
+        // przelicz algorytm
+        grainAlgorithm.calculate();
+
+        // mapowanie koloru do id
+        board.matchColorToModifiedFields();
+
+        //rysowanie pikseli
+        board.redraw();
     }
 
     @FXML
@@ -154,6 +182,48 @@ public class Controller {
 
         board.getBoard()[3][2].setId(1);
         board.getBoard()[7][7].setId(2);
+
+
+        final int seedAmount = getSeedAmount();
+
+        // inicjacja algorytmu
+        GrainGrowth grainAlgorithm =
+                new VonNeumann(board,
+                        seedAmount,
+                        xBoardDimension,
+                        yBoardDimension);
+
+        // przelicz algorytm
+        grainAlgorithm.calculate();
+
+        // mapowanie koloru do id
+        board.matchColorToModifiedFields();
+
+        //rysowanie pikseli
+        board.redraw();
+
+
+//        final int seedAmount = getSeedAmount();
+//        VonNeumann gainAlgoruthm = new VonNeumann(board, seedAmount, xBoardDimension, yBoardDimension);
+//        gainAlgoruthm.calculate();
+//
+//        // mapowanie koloru do id
+//        Arrays.stream(board.getBoard()).flatMap(Stream::of)
+//                .forEach(field ->{
+//                    final java.awt.Color color = getMatchedColorToId(field.getId());
+//                    field.setColor(color);
+//                });
+//
+//
+//        //rysowanie pikseli
+//        redraw();
+//
+//                Arrays.stream(board.getBoard()).flatMap(Stream::of)
+//                .forEach(field -> board.fillPixel(
+//                                                    field.getyPosition(),
+//                        field.getxPosition(),
+//                                                    convertAwtColorToFxColor(field.getColor())));
+
     }
 
     private int getXBoardDimension(){
@@ -162,6 +232,10 @@ public class Controller {
 
     private int getYBoardDimension(){
         return Integer.valueOf(ySizeView.getText());
+    }
+
+    private int getSeedAmount(){
+        return Integer.valueOf(seedAmount.getText());
     }
 
     enum FileOperationType{

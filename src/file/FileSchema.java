@@ -1,5 +1,6 @@
 package file;
 
+import helper.ColorFuncionality;
 import board.Field;
 
 import java.awt.*;
@@ -14,7 +15,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-public class FileSchema {
+public class FileSchema extends ColorFuncionality {
 
     private final String LINE_REGEX = "\\d \\d \\d \\d";
     private final Pattern PATTERN = Pattern.compile(LINE_REGEX);
@@ -22,12 +23,10 @@ public class FileSchema {
     private int xSize;
     private int ySize;
     private List<Field> pointList = new ArrayList<>();
-    private Map<Integer, Color> usedColor = new HashMap<>();
     private String pathToFile;
 
     public FileSchema(String pathToFile) throws IOException {
         this.pathToFile = pathToFile;
-        usedColor.put(0, Color.WHITE);
         parseHeaderOfFile();
         addDataToPointList();
     }
@@ -60,52 +59,15 @@ public class FileSchema {
         });
     }
 
-    private Color getRandomColor(){
-        Random rand = new Random();
-        float r = rand.nextFloat();
-        float g = rand.nextFloat();
-        float b = rand.nextFloat();
-        return new Color(r, g, b);
-    }
-
-    private Color getMatchedColorToId(int fieldId){
-        final boolean isIdExist = usedColor.containsKey(fieldId);
-        Color color;
-        if (isIdExist){
-            color = usedColor.get(fieldId);
-        }
-        else {
-            color = getRandomColor();
-            usedColor.put(fieldId, color);
-        }
-        return color;
-    }
-
-
-
-
-
     public int getxSize() {
         return xSize;
-    }
-
-    public void setxSize(int xSize) {
-        this.xSize = xSize;
     }
 
     public int getySize() {
         return ySize;
     }
 
-    public void setySize(int ySize) {
-        this.ySize = ySize;
-    }
-
     public List<Field> getPointList() {
         return pointList;
-    }
-
-    public void setPointList(List<Field> pointList) {
-        this.pointList = pointList;
     }
 }

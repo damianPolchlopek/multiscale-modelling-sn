@@ -1,5 +1,6 @@
 package board;
 
+import helper.ColorFuncionality;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -7,7 +8,7 @@ import javafx.scene.paint.Color;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
-public class Board {
+public class Board extends ColorFuncionality {
 
     private final int WIDTH_FIELD = 5;
     private final int HEIGHT_FIELD = 5;
@@ -18,9 +19,6 @@ public class Board {
     private int xSize;
     private int ySize;
 
-    private int xCurrentPosition;
-    private int yCurrentPosition;
-
     private Field[][] board;
 
     public Board(int xSize, int ySize, Canvas canvas) {
@@ -28,28 +26,12 @@ public class Board {
         this.ySize = ySize;
         this.canvas = canvas;
         this.graphicsContext = canvas.getGraphicsContext2D();
-        this.xCurrentPosition = 0;
-        this.yCurrentPosition = 0;
         this.board = new Field[ySize][xSize];
 
         canvas.setWidth(xSize*5);
         canvas.setHeight(ySize*5);
-    }
 
-    private int getNextXPosition(){
-        return xCurrentPosition + WIDTH_FIELD;
-    }
-
-    private int getPrevXPosition(){
-        return xCurrentPosition - WIDTH_FIELD;
-    }
-
-    private int getNextYPosition(){
-        return yCurrentPosition + HEIGHT_FIELD;
-    }
-
-    private int getPrexYPosition(){
-        return yCurrentPosition - HEIGHT_FIELD;
+        initBoard();
     }
 
     public void fillPixel(int xPosition, int yPosition, Color color){
@@ -61,7 +43,7 @@ public class Board {
 
     public void initBoard(){
         this.graphicsContext.setFill(Color.RED);
-        for (int i = 0; i < xSize*5; i++) {
+            for (int i = 0; i < xSize*5; i++) {
             //poziome
             this.graphicsContext.fillRect(i, 0, 1,1);
             this.graphicsContext.fillRect(i, (xSize*5)-1, 1,1);
@@ -77,6 +59,21 @@ public class Board {
             }
         }
 
+    }
+
+    public void matchColorToModifiedFields(){
+        Arrays.stream(board).flatMap(Stream::of)
+            .forEach(field ->{
+                final java.awt.Color color = getMatchedColorToId(field.getId());
+                field.setColor(color);
+            });
+    }
+
+    public void redraw(){
+        Arrays.stream(board).flatMap(Stream::of)
+                .forEach(field -> fillPixel(field.getxPosition(),
+                        field.getyPosition(),
+                        convertAwtColorToFxColor(field.getColor())));
     }
 
     public String getBoardContent(){
@@ -96,12 +93,8 @@ public class Board {
         return xPos + " " + yPos + " " + phase + " " + id + System.lineSeparator();
     }
 
-
     public Field[][] getBoard() {
         return board;
     }
 
-    public void setBoard(Field[][] board) {
-        this.board = board;
-    }
 }
