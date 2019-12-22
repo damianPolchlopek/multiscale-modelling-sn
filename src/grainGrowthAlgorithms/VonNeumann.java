@@ -31,23 +31,23 @@ public class VonNeumann extends GrainGrowth {
 
                             // gora
                             if (yPos-1 >= 0)
-                                if (board.getBoard()[xPos][yPos-1].getId() == 0) {
-                                    board.getBoard()[xPos][yPos-1].setId(fieldId);
+                                if (board.getBoard()[yPos-1][xPos].getId() == 0) {
+                                    board.getBoard()[yPos-1][xPos].setId(fieldId);
                                 }
                             // prawo
                             if (xPos+1 < xBoardDimension)
-                                if (board.getBoard()[xPos+1][yPos].getId() == 0) {
-                                    board.getBoard()[xPos+1][yPos].setId(fieldId);
+                                if (board.getBoard()[yPos][xPos+1].getId() == 0) {
+                                    board.getBoard()[yPos][xPos+1].setId(fieldId);
                                 }
                             // dol
                             if (yPos+1 < yBoardDimension)
-                                if (board.getBoard()[xPos][yPos+1].getId() == 0) {
-                                    board.getBoard()[xPos][yPos+1].setId(fieldId);
+                                if (board.getBoard()[yPos+1][xPos].getId() == 0) {
+                                    board.getBoard()[yPos+1][xPos].setId(fieldId);
                                 }
                             // lewo
                             if (xPos-1 >= 0)
-                                if (board.getBoard()[xPos-1][yPos].getId() == 0) {
-                                    board.getBoard()[xPos-1][yPos].setId(fieldId);
+                                if (board.getBoard()[yPos][xPos-1].getId() == 0) {
+                                    board.getBoard()[yPos][xPos-1].setId(fieldId);
                                 }
                         }
                     });

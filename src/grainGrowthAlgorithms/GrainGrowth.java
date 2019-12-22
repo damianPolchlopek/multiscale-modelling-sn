@@ -35,7 +35,7 @@ public abstract class GrainGrowth {
         for (int i = 0; i < seedAmount; i++) {
             xRand = random.nextInt(xBoardDimension);
             yRand = random.nextInt(yBoardDimension);
-            board.getBoard()[xRand][yRand].setId(i+1); // id equals 0 is default value for field in board
+            board.getBoard()[yRand][xRand].setId(i+1); // id equals 0 is default value for field in board
         }
     }
 

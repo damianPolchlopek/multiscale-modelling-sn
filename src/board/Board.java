@@ -55,7 +55,8 @@ public class Board extends ColorFunctionality {
 
         for (int i = 0; i < this.ySize; i++) {
             for (int j = 0; j < this.xSize; j++) {
-                board[j][i] = new Field(j, i, 0, 0, java.awt.Color.WHITE);
+                board[i][j] =
+                        new Field(j, i, 0, 0, java.awt.Color.WHITE);
             }
         }
 
