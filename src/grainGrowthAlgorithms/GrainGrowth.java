@@ -8,6 +8,8 @@ import java.util.stream.Stream;
 
 public abstract class GrainGrowth {
 
+    final int INCLUSION_COLOR = 100;
+
     Board board;
     int xBoardDimension;
     int yBoardDimension;
@@ -35,6 +37,7 @@ public abstract class GrainGrowth {
         for (int i = 0; i < seedAmount; i++) {
             xRand = random.nextInt(xBoardDimension);
             yRand = random.nextInt(yBoardDimension);
+            //TODO: dodac warunek czy nie wylosowano inclusiona
             board.getBoard()[yRand][xRand].setId(i+1); // id equals 0 is default value for field in board
         }
     }
