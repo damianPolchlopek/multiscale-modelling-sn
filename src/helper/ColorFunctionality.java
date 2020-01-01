@@ -10,6 +10,7 @@ public class ColorFunctionality {
 
     public ColorFunctionality() {
         usedColor.put(0, Color.WHITE);
+        usedColor.put(100, Color.BLACK);
     }
 
     private java.awt.Color getRandomColor(){

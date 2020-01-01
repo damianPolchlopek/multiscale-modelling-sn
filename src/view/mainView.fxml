@@ -2,6 +2,7 @@
 
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
@@ -30,7 +31,7 @@
    <left>
       <VBox fillWidth="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="375.0" prefWidth="108.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox prefHeight="200.0" prefWidth="100.0">
+            <VBox prefHeight="171.0" prefWidth="100.0">
                <children>
                   <Label text="xSize" />
                   <TextField fx:id="xSizeView" />
@@ -38,15 +39,23 @@
                   <TextField fx:id="ySizeView" />
                   <Label text="Amount of seed:" />
                   <TextField fx:id="seedAmount" />
+                  <Button mnemonicParsing="false" onAction="#generateBoard" prefWidth="99.0" text="Generate Board" />
                </children>
             </VBox>
-            <Button mnemonicParsing="false" onAction="#drawBoard" text="Draw Board">
+            <Button mnemonicParsing="false" onAction="#clearBoard" text="Clear Board">
                <font>
                   <Font size="14.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" onAction="#clearBoard" text="Clear Board" />
-            <Button mnemonicParsing="false" onAction="#generateBoard" text="Generate Board" />
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Label text="Amount of inclusions:" />
+                  <TextField fx:id="inclusionAmount" />
+                  <Label text="Size of Inclusions:" />
+                  <TextField fx:id="inclusionSize" />
+                  <ChoiceBox fx:id="inclusionType" prefWidth="150.0" />
+                  <Button mnemonicParsing="false" onAction="#addInclusions" text="Add inclusions" />
+               </children></VBox>
          </children>
       </VBox>
    </left>
