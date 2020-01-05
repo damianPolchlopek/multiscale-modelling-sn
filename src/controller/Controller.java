@@ -2,6 +2,7 @@ package controller;
 
 
 import board.Board;
+import dto.Pixel;
 import helper.ColorFunctionality;
 import file.FileSchema;
 import grainGrowthAlgorithms.GrainGrowth;
@@ -25,8 +26,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.ResourceBundle;
+import java.util.stream.Stream;
 
 
 public class Controller extends ColorFunctionality implements Initializable {
@@ -65,10 +68,90 @@ public class Controller extends ColorFunctionality implements Initializable {
         inclusionType.getSelectionModel().select("Square");
     }
 
+    private Pixel determineCoordinate(){
+        final int xBoardDimension = parseTextFieldToInt(xSizeView);
+        final int yBoardDimension = parseTextFieldToInt(ySizeView);
+        final int incSize = parseTextFieldToInt(inclusionSize);
+        final String incType = inclusionType.getValue();
+        final Random random = new Random();
+
+        final boolean isAfterAlgorithm = Arrays.stream(board.getBoard()).flatMap(Stream::of)
+                .allMatch((field) -> field.getId() != 0);
+
+        int xPos, yPos;
+        if (incType.equals("Square")){
+            xPos = random.nextInt(xBoardDimension-incSize+1);
+            yPos = random.nextInt(yBoardDimension-incSize+1);
+
+            if (isAfterAlgorithm){
+                while(!isCoordinateOnSeedBoundry(xPos, yPos)){
+                    xPos = random.nextInt(xBoardDimension-incSize+1);
+                    yPos = random.nextInt(yBoardDimension-incSize+1);
+                }
+            }
+        }
+        else{
+            xPos = random.nextInt(xBoardDimension-2*incSize) + incSize;
+            yPos = random.nextInt(yBoardDimension-2*incSize) + incSize;
+
+            if (isAfterAlgorithm){
+                while(!isCoordinateOnSeedBoundry(xPos, yPos)){
+                    xPos = random.nextInt(xBoardDimension-2*incSize) + incSize;
+                    yPos = random.nextInt(yBoardDimension-2*incSize) + incSize;
+                }
+            }
+        }
+
+        return new Pixel(xPos,yPos);
+    }
+
+    //TODO: zrefaktoryzowac funkcje 'determineCoordinate' za pomoca ponizszej funkcji
+//    private Pixel randomCoordinateForInclusion(){
+//        final int xBoardDimension = parseTextFieldToInt(xSizeView);
+//        final int yBoardDimension = parseTextFieldToInt(ySizeView);
+//        final int incSize = parseTextFieldToInt(inclusionSize);
+//        final String incType = inclusionType.getValue();
+//        final Random random = new Random();
+//
+//        int xPos, yPos;
+//        if (incType.equals("Square")){
+//            xPos = random.nextInt(xBoardDimension-incSize+1);
+//            yPos = random.nextInt(yBoardDimension-incSize+1);
+//        }
+//        else{
+//            xPos = random.nextInt(xBoardDimension-2*incSize) + incSize;
+//            yPos = random.nextInt(yBoardDimension-2*incSize) + incSize;
+//        }
+//
+//        return new Pixel(xPos, yPos);
+//    }
+
+    private boolean isCoordinateOnSeedBoundry(final int xPos, final int yPos){
+        final int xBoardDimension = parseTextFieldToInt(xSizeView);
+        final int nextXPos = xPos == xBoardDimension ? xPos : xPos + 1;
+        final int prevXPos = xPos == 0 ? xPos : xPos - 1;
+
+        final int yBoardDimension = parseTextFieldToInt(ySizeView);
+        final int nextYPos = yPos == yBoardDimension ? yPos : yPos + 1;
+        final int prevYPos = yPos == 0 ? yPos : yPos - 1;
+
+        return isTwoPixelsHasDifferentId(new Pixel(xPos, yPos), new Pixel(nextXPos, yPos)) ||
+                isTwoPixelsHasDifferentId(new Pixel(xPos, yPos), new Pixel(prevXPos, yPos)) ||
+                isTwoPixelsHasDifferentId(new Pixel(xPos, yPos), new Pixel(xPos, nextYPos)) ||
+                isTwoPixelsHasDifferentId(new Pixel(xPos, yPos), new Pixel(xPos, prevYPos));
+    }
+
+    private boolean isTwoPixelsHasDifferentId(Pixel firstPixel, Pixel secondPixel){
+        return ( board.getBoard()[firstPixel.getyPosition()][firstPixel.getxPosition()].getId() !=
+                 board.getBoard()[secondPixel.getyPosition()][secondPixel.getxPosition()].getId() )
+                &&
+                ( board.getBoard()[firstPixel.getyPosition()][firstPixel.getxPosition()].getId() != 100 &&
+                  board.getBoard()[secondPixel.getyPosition()][secondPixel.getxPosition()].getId() != 100 );
+    }
+
     @FXML
     public void addInclusions(){
         final int iInclusionAmount = parseTextFieldToInt(inclusionAmount);
-        final int iInclusionSize = parseTextFieldToInt(inclusionSize);
         final String sInclusionType = inclusionType.getSelectionModel().getSelectedItem();
 
         if (board == null) {
@@ -78,143 +161,79 @@ public class Controller extends ColorFunctionality implements Initializable {
         }
 
         if (sInclusionType.contains("Square")){
-            addSquareInclusions(iInclusionAmount, iInclusionSize);
+            addSquareInclusions(iInclusionAmount);
         }
         else{
-            addCircleInclusions(iInclusionAmount, iInclusionSize);
+            addCircleInclusions(iInclusionAmount);
         }
-
     }
 
-    private void addCircleInclusions(int iInclusionAmount, int iInclusionSize) {
-        final int xBoardDimension = parseTextFieldToInt(xSizeView);
-        final int yBoardDimension = parseTextFieldToInt(ySizeView);
-
-        Random random = new Random();
-        int yRand, xRand;
+    private void addCircleInclusions(int iInclusionAmount) {
         for (int i = 0; i < iInclusionAmount; i++) {
-            xRand = random.nextInt(xBoardDimension);
-            yRand = random.nextInt(yBoardDimension);
-
-            addCircleInclusion(xRand, yRand, iInclusionSize);
+            Pixel inclusionCoordinate = determineCoordinate();
+            addCircleInclusion(inclusionCoordinate.getxPosition(),
+                                inclusionCoordinate.getyPosition());
         }
 
         board.redraw();
     }
 
-    private void addCircleInclusion(int x0, int y0, int iInclusionSize) {
+    private void addCircleInclusion(int x0, int y0) {
+        final int iInclusionSize = parseTextFieldToInt(inclusionSize);
         int x = iInclusionSize;
         int y = 0;
         int xChange = 1 - (iInclusionSize << 1);
         int yChange = 0;
         int radiusError = 0;
 
-        int firstBoundary, tmpFirstBoundary;
-        int secondBoundary, tmpSecondBoundary;
-        int thirdBoundry;
-
-        final int minimalBoundryValue = 0;
-        final int maximumBoundryHight = parseTextFieldToInt(ySizeView) - 1;
-        final int maximumBoundryWidth = parseTextFieldToInt(xSizeView) - 1;
-
-        int tmpI;
-        while (x >= y)
-        {
-            System.out.println("While");
-            tmpI = x0 - x;
-            tmpI = tmpI >= 0 ? tmpI : 0;
-
-            for (int i = tmpI; i <= x0 + x; i++)
-            {
-                tmpFirstBoundary = y0 + y;
-                firstBoundary = tmpFirstBoundary < maximumBoundryWidth ? tmpFirstBoundary : maximumBoundryWidth;
-
-                tmpSecondBoundary = y0 - y;
-                secondBoundary = tmpSecondBoundary > minimalBoundryValue ? tmpSecondBoundary : minimalBoundryValue;
-                secondBoundary = secondBoundary < maximumBoundryWidth ? secondBoundary : maximumBoundryWidth;
-
-                thirdBoundry = i <= maximumBoundryHight ? i : maximumBoundryHight;
-
-                System.out.println("firstBoundry: " + firstBoundary + ", secondBoundry: " + secondBoundary + ", thirdBoundry: " + thirdBoundry);
-
-                board.getBoard()[thirdBoundry][firstBoundary].setColor(java.awt.Color.BLACK);
-                board.getBoard()[thirdBoundry][firstBoundary].setId(100);
-
-                board.getBoard()[thirdBoundry][secondBoundary].setColor(java.awt.Color.BLACK);
-                board.getBoard()[thirdBoundry][secondBoundary].setId(100);
-
-//                board.fillPixel(i, y0 + y, Color.BLACK);
-//                board.fillPixel(i, y0 - y, Color.BLACK);
+        while (x >= y) {
+            for (int i = x0 - x; i <= x0 + x; i++) {
+                fillBlackPixelOnBoard(i, y0+y);
+                fillBlackPixelOnBoard(i, y0-y);
             }
 
-
-            tmpI = x0 - y;
-            tmpI = tmpI >= 0 ? tmpI : 0;
-            for (int i = tmpI; i <= x0 + y; i++)
-            {
-//                System.out.println("yyyyy x: " + i + ", y: " + (y0 + x));
-
-                tmpFirstBoundary = y0 + x;
-                firstBoundary = tmpFirstBoundary < maximumBoundryWidth ? tmpFirstBoundary : maximumBoundryWidth;
-
-                tmpSecondBoundary = y0 - x;
-                secondBoundary = tmpSecondBoundary > minimalBoundryValue ? tmpSecondBoundary : minimalBoundryValue;
-                secondBoundary = secondBoundary < maximumBoundryWidth ? secondBoundary : maximumBoundryWidth;
-
-                thirdBoundry = i <= maximumBoundryHight ? i : maximumBoundryHight;
-
-                board.getBoard()[thirdBoundry][firstBoundary].setColor(java.awt.Color.BLACK);
-                board.getBoard()[thirdBoundry][firstBoundary].setId(100);
-
-                board.getBoard()[thirdBoundry][secondBoundary].setColor(java.awt.Color.BLACK);
-                board.getBoard()[thirdBoundry][secondBoundary].setId(100);
+            for (int i = x0 - y; i <= x0 + y; i++) {
+                fillBlackPixelOnBoard(i, y0+x);
+                fillBlackPixelOnBoard(i, y0-x);
             }
 
             y++;
             radiusError += yChange;
             yChange += 2;
-            if (((radiusError << 1) + xChange) > 0)
-            {
+            if (((radiusError << 1) + xChange) > 0) {
                 x--;
                 radiusError += xChange;
                 xChange += 2;
             }
         }
-
-
     }
 
-    private void addSquareInclusions(int iInclusionAmount, int iInclusionSize) {
-        final int xBoardDimension = parseTextFieldToInt(xSizeView);
-        final int yBoardDimension = parseTextFieldToInt(ySizeView);
-
-        Random random = new Random();
-        int yRand, xRand;
-        int yBoundary, tmpYBoundary;
-        int xBoundary, tmpXBoundary;
+    private void addSquareInclusions(int iInclusionAmount) {
         for (int i = 0; i < iInclusionAmount; i++) {
-            xRand = random.nextInt(xBoardDimension);
-            yRand = random.nextInt(yBoardDimension);
-
-            tmpYBoundary = yRand + iInclusionSize;
-            yBoundary = tmpYBoundary <= yBoardDimension ? tmpYBoundary : yBoardDimension;
-
-            tmpXBoundary = xRand + iInclusionSize;
-            xBoundary = tmpXBoundary <= xBoardDimension ? tmpXBoundary : xBoardDimension;
-
-            addSquareInclusion(xRand, yRand, xBoundary, yBoundary);
+            Pixel inclusionCoordinate = determineCoordinate();
+            addSquareInclusion(inclusionCoordinate.getxPosition(),
+                                inclusionCoordinate.getyPosition());
         }
 
         board.redraw();
     }
 
-    private void addSquareInclusion(int xRand, int yRand, int xBoundary, int yBoundary) {
+    private void addSquareInclusion(int xRand, int yRand) {
+        final int iInclusionSize = parseTextFieldToInt(inclusionSize);
+        final int yBoundary = yRand + iInclusionSize;
+        final int xBoundary = xRand + iInclusionSize;
+
         for (int i = yRand; i < yBoundary; i++) {
             for (int j = xRand; j < xBoundary; j++) {
-                board.getBoard()[i][j].setColor(java.awt.Color.BLACK);
-                board.getBoard()[i][j].setId(100);
+                fillBlackPixelOnBoard(j, i);
             }
         }
+    }
+
+    private void fillBlackPixelOnBoard(int xPos, int yPos){
+        board.getBoard()[yPos][xPos].setColor(java.awt.Color.BLACK);
+        board.getBoard()[yPos][xPos].setId(100);
+        board.getBoard()[yPos][xPos].setColoredPrevStep(true);
     }
 
     @FXML
@@ -244,10 +263,8 @@ public class Controller extends ColorFunctionality implements Initializable {
         final int xBoardDimension = parseTextFieldToInt(xSizeView);
         final int yBoardDimension = parseTextFieldToInt(ySizeView);
 
-        // stworz board
-        if (board == null) {
+        if (board == null)
             board = new Board(xBoardDimension, yBoardDimension, canvas);
-        }
 
         // inicjacja algorytmu
         GrainGrowth grainAlgorithm =

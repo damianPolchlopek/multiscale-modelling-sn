@@ -53,6 +53,9 @@ public class VonNeumann extends GrainGrowth {
                     });
 
             isAllBoardFilled = checkIfBoardFilled();
+
+            //symulacja
+            board.redraw();
         }
     }
 
