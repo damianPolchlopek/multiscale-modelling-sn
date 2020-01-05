@@ -28,8 +28,8 @@ public class Board extends ColorFunctionality {
         this.graphicsContext = canvas.getGraphicsContext2D();
         this.board = new Field[ySize][xSize];
 
-        canvas.setWidth(xSize*5);
-        canvas.setHeight(ySize*5);
+        canvas.setWidth(xSize*WIDTH_FIELD);
+        canvas.setHeight(ySize*HEIGHT_FIELD);
 
         initBoard();
     }
@@ -41,25 +41,14 @@ public class Board extends ColorFunctionality {
         this.graphicsContext.fillRect(xRealPosition, yRealPosition, WIDTH_FIELD, HEIGHT_FIELD);
     }
 
-    public void initBoard(){
+    private void initBoard(){
         this.graphicsContext.setFill(Color.RED);
-            for (int i = 0; i < xSize*5; i++) {
-            //poziome
-            this.graphicsContext.fillRect(i, 0, 1,1);
-            this.graphicsContext.fillRect(i, (xSize*5)-1, 1,1);
-
-            // pionowe
-            this.graphicsContext.fillRect(0, i, 1,1);
-            this.graphicsContext.fillRect((ySize*5)-1, i, 1,1);
-        }
-
         for (int i = 0; i < this.ySize; i++) {
             for (int j = 0; j < this.xSize; j++) {
                 board[i][j] =
                         new Field(j, i, 0, 0, java.awt.Color.WHITE);
             }
         }
-
     }
 
     public void matchColorToModifiedFields(){
