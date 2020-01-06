@@ -74,10 +74,8 @@ public class VonNeumann extends GrainGrowth {
             board.matchColorToModifiedFields();
             board.redraw();
 
-            }
-
-
         }
+    }
 
 
     private HashMap<Integer, Integer> getMapForNeighborhood(final int currentXPosition, final int currentYPosition){
@@ -144,6 +142,8 @@ public class VonNeumann extends GrainGrowth {
 
         return result;
     }
+
+
 
 
 

@@ -25,7 +25,6 @@ public abstract class GrainGrowth {
 
     public abstract void calculate();
 
-
     boolean checkIfBoardFilled() {
         return Arrays.stream(board.getBoard()).flatMap(Stream::of)
                 .allMatch((field) -> field.getId() != 0);
@@ -42,13 +41,6 @@ public abstract class GrainGrowth {
             board.getBoard()[yRand][xRand].setId(i+1); // id equals 0 is default value for field in board
         }
     }
-
-//    void updateColoredPrevStepField(){
-//        Arrays.stream(board.getBoard()).flatMap(Stream::of)
-//                .forEach(field ->{
-//                    if (field.getId() != 0) field.setColoredPrevStep(true);
-//                } );
-//    }
 
     void updateColoredPrevStepInNeighbour() {
 
@@ -81,17 +73,11 @@ public abstract class GrainGrowth {
                     if (xPos - 1 >= 0)
                         if (board.getBoard()[yPos][xPos - 1].getId() == 0) {
                             board.getBoard()[yPos][xPos - 1].setColoredPrevStep(true);
-
-
                         }
-
-
                 }
             }
 
-
         }
     }
-
 
 }
