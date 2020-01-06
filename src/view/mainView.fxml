@@ -56,6 +56,12 @@
                   <ChoiceBox fx:id="inclusionType" prefWidth="150.0" />
                   <Button mnemonicParsing="false" onAction="#addInclusions" text="Add inclusions" />
                </children></VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Label text="Simulation steps" />
+                  <TextField fx:id="simultionStepNumber" />
+                  <Button mnemonicParsing="false" onAction="#draw" text="Debug" />
+               </children></VBox>
          </children>
       </VBox>
    </left>
