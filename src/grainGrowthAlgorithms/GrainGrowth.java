@@ -4,20 +4,16 @@ import board.Board;
 import board.Field;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Random;
 import java.util.stream.Stream;
 
 public abstract class GrainGrowth {
-
-    final int INCLUSION_COLOR = 100;
 
     Board board;
     int xBoardDimension;
     int yBoardDimension;
     int simulationStep;
     private int seedAmount;
-    HashMap<Integer, Integer> pixelNeighborhood;
 
     GrainGrowth(Board board, int seedAmount, int simulationStep) {
         this.board = board;
@@ -25,7 +21,6 @@ public abstract class GrainGrowth {
         this.xBoardDimension = board.getBoard()[0].length;
         this.yBoardDimension = board.getBoard().length;
         this.simulationStep = simulationStep;
-        this.pixelNeighborhood = new HashMap<>();
     }
 
     public abstract void calculate();
@@ -48,13 +43,12 @@ public abstract class GrainGrowth {
         }
     }
 
-    void updateColoredPrevStepField(){
-        Arrays.stream(board.getBoard()).flatMap(Stream::of)
-                .forEach(field ->{
-                    if (field.getId() != 0) field.setColoredPrevStep(true);
-                } );
-    }
-
+//    void updateColoredPrevStepField(){
+//        Arrays.stream(board.getBoard()).flatMap(Stream::of)
+//                .forEach(field ->{
+//                    if (field.getId() != 0) field.setColoredPrevStep(true);
+//                } );
+//    }
 
     void updateColoredPrevStepInNeighbour() {
 

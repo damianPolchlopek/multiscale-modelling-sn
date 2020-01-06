@@ -22,9 +22,6 @@ public class VonNeumann extends GrainGrowth {
             if (simulationStep == currentSimultionStep)
                 break;
 
-            // ustawienie coloredPrevStep na true
-//            updateColoredPrevStepField();
-
             updateColoredPrevStepInNeighbour();
 
             //iteracja po boardzie i pierwsza iteracja
@@ -34,43 +31,9 @@ public class VonNeumann extends GrainGrowth {
                     Field field = board.getBoard()[i][j];
                     if (field.getId() == 0 && field.isColoredPrevStep()) {
 //
-//                        // algorytm sasiedztwa
+                        // algorytm sasiedztwa
                         int xPos = field.getxPosition();
                         int yPos = field.getyPosition();
-//                        int fieldId = field.getId();
-//
-//                        final int prevXPosition = xPos - 1;
-//                        final int prevYPosition = yPos - 1;
-//                        final int nextXPosition = xPos + 1;
-//                        final int nextYPosition = yPos + 1;
-//                        HashMap<Integer, Integer> nearestNeighbor = new HashMap<>();
-//
-//                        //-1 .x.
-//                        if (prevYPosition >= 0 && xPos >= 0)
-//                            addElementToMap(nearestNeighbor, board.getBoard()[prevYPosition][xPos].getId());
-//
-//                        //0 x..
-//                        if (yPos >= 0 && prevXPosition >= 0)
-//                            addElementToMap(nearestNeighbor, board.getBoard()[yPos][prevXPosition].getId());
-//
-//                        //0 ..x
-//                        if (yPos >= 0 && nextXPosition < xBoardDimension)
-//                            addElementToMap(nearestNeighbor, board.getBoard()[yPos][nextXPosition].getId());
-//
-//                        //+1 .x.
-//                        if (nextYPosition < yBoardDimension && xPos >= 0)
-//                            addElementToMap(nearestNeighbor, board.getBoard()[nextYPosition][xPos].getId());
-//
-//                        int mostFrequentKey = getMostFrequentKeyFromMap(nearestNeighbor);
-//
-//                        if (mostFrequentKey > -1)
-//                            board.getBoard()[yPos][xPos].setId(mostFrequentKey);
-//
-//                        System.out.println("most frq: " + mostFrequentKey);
-//                        }
-
-                        // ----------------------------------------------------------------------------------------
-
 
                         System.out.println("------------------------------------------");
                         boolean ifFirstRuleCompleted = firstRule(xPos, yPos);
@@ -93,17 +56,17 @@ public class VonNeumann extends GrainGrowth {
                         if (ifFourthRuleCompleted)
                             continue;
 
-                        HashMap<Integer, Integer> res = getMapForNeighborhood(j, i);
-                        System.out.println("x: " + j + ", y: " + i + ", most frequent id: " + getMostFrequentNeighbor(j, i) + ", amount: " + res.get(getMostFrequentNeighbor(j, i)));
+//                        HashMap<Integer, Integer> res = getMapForNeighborhood(j, i);
+//                        System.out.println("x: " + j + ", y: " + i + ", most frequent id: " + getMostFrequentNeighbor(j, i) + ", amount: " + res.get(getMostFrequentNeighbor(j, i)));
                     }
                 }
             }
 
-//            try {
-//                Thread.sleep(100);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
             isAllBoardFilled = checkIfBoardFilled();
             currentSimultionStep++;
@@ -181,9 +144,6 @@ public class VonNeumann extends GrainGrowth {
 
         return result;
     }
-
-
-
 
 
 
