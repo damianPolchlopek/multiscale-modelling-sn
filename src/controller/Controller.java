@@ -55,6 +55,9 @@ public class Controller extends ColorFunctionality implements Initializable {
     private TextField inclusionSize;
 
     @FXML
+    private TextField simultionStepNumber;
+
+    @FXML
     private ChoiceBox<String> inclusionType;
 
     @FXML
@@ -262,16 +265,22 @@ public class Controller extends ColorFunctionality implements Initializable {
         final int iSeedAmount = parseTextFieldToInt(seedAmount);
         final int xBoardDimension = parseTextFieldToInt(xSizeView);
         final int yBoardDimension = parseTextFieldToInt(ySizeView);
+        int simulationStep;
 
         if (board == null)
             board = new Board(xBoardDimension, yBoardDimension, canvas);
+
+        if (simultionStepNumber.getText().isEmpty())
+            simulationStep = -1;
+        else
+            simulationStep = parseTextFieldToInt(simultionStepNumber);
+
 
         // inicjacja algorytmu
         GrainGrowth grainAlgorithm =
                 new VonNeumann(board,
                             iSeedAmount,
-                            xBoardDimension,
-                            yBoardDimension);
+                            simulationStep);
 
         // wylosuj ziarna
         grainAlgorithm.randomSeed();
@@ -279,11 +288,6 @@ public class Controller extends ColorFunctionality implements Initializable {
         // przelicz algorytm
         grainAlgorithm.calculate();
 
-        // mapowanie koloru do id
-        board.matchColorToModifiedFields();
-
-        //rysowanie pikseli
-        board.redraw();
     }
 
     @FXML
@@ -371,6 +375,38 @@ public class Controller extends ColorFunctionality implements Initializable {
     private int parseTextFieldToInt(TextField field){
         return Integer.valueOf(field.getText());
     }
+
+    @FXML
+    public void draw(){
+        final int iSeedAmount = parseTextFieldToInt(seedAmount);
+        final int xBoardDimension = parseTextFieldToInt(xSizeView);
+        final int yBoardDimension = parseTextFieldToInt(ySizeView);
+        int simulationStep;
+
+        if (board == null)
+            board = new Board(xBoardDimension, yBoardDimension, canvas);
+
+        if (simultionStepNumber.getText().isEmpty())
+            simulationStep = -1;
+        else
+            simulationStep = parseTextFieldToInt(simultionStepNumber);
+
+
+        // inicjacja algorytmu
+        GrainGrowth grainAlgorithm =
+                new VonNeumann(board,
+                        iSeedAmount,
+                        simulationStep);
+
+        // wylosuj ziarna
+        board.getBoard()[2][2].setId(1);
+        board.getBoard()[7][7].setId(2);
+
+        // przelicz algorytm
+        grainAlgorithm.calculate();
+
+    }
+
 
     enum FileOperationType{
         Import,
