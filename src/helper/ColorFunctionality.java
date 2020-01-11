@@ -43,4 +43,8 @@ public class ColorFunctionality {
         return javafx.scene.paint.Color.rgb(r, g, b, opacity);
     }
 
+    public Color getColor(int id){
+        return usedColor.get(id);
+    }
+
 }

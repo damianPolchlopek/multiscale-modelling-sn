@@ -29,30 +29,30 @@ public class VonNeumann extends GrainGrowth {
                 for (int j = 0; j < board.getBoard()[0].length; j++) {
 
                     Field field = board.getBoard()[i][j];
-                    if (field.getId() == 0 && field.isColoredPrevStep()) {
+                    if (field.getId() == 0 && field.isColoredPrevStep() && field.getId() != 100) {
 //
                         // algorytm sasiedztwa
                         int xPos = field.getxPosition();
                         int yPos = field.getyPosition();
 
-                        System.out.println("------------------------------------------");
+//                        System.out.println("------------------------------------------");
                         boolean ifFirstRuleCompleted = firstRule(xPos, yPos);
-                        System.out.println("Rule 1: " + ifFirstRuleCompleted);
+//                        System.out.println("Rule 1: " + ifFirstRuleCompleted);
                         if (ifFirstRuleCompleted)
                             continue;
 
                         boolean ifSecondRuleCompleted = secondRule(xPos, yPos);
-                        System.out.println("Rule 2: " + ifSecondRuleCompleted);
+//                        System.out.println("Rule 2: " + ifSecondRuleCompleted);
                         if (ifSecondRuleCompleted)
                             continue;
 
                         boolean ifThirdRuleCompleted = thirdRule(xPos, yPos);
-                        System.out.println("Rule 3: " + ifThirdRuleCompleted);
+//                        System.out.println("Rule 3: " + ifThirdRuleCompleted);
                         if (ifThirdRuleCompleted)
                             continue;
 
                         boolean ifFourthRuleCompleted = fourthRule(xPos, yPos);
-                        System.out.println("Rule 4: " + ifFourthRuleCompleted);
+//                        System.out.println("Rule 4: " + ifFourthRuleCompleted);
                         if (ifFourthRuleCompleted)
                             continue;
 
@@ -62,18 +62,46 @@ public class VonNeumann extends GrainGrowth {
                 }
             }
 
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            //board.getCanvas().getGraphicsContext2D().restore();
+            board.redraw();
+
+
+//            try {
+//////                Thread.sleep(1000);
+////                TimeUnit.SECONDS.sleep(1);
+////            } catch (InterruptedException e) {
+////                e.printStackTrace();
+////            }
 
             isAllBoardFilled = checkIfBoardFilled();
             currentSimultionStep++;
 
-            board.matchColorToModifiedFields();
-            board.redraw();
 
+//            Thread t1 = new Thread(){
+//                @Override
+//                public void run() {
+//                    super.run();
+//                    board.redraw();
+//                }
+//            };
+//            t1.start();
+
+
+
+//            new AnimationTimer() {
+//                @Override public void handle(long currentNanoTime) {
+//                    board.redraw();
+//
+//                    try {
+//                        Thread.sleep(100);
+//                    } catch (InterruptedException e) {
+//                        // Do nothing
+//                    }
+//                }
+//            }.start();
+
+
+            System.out.println("Przerysowuje");
         }
     }
 
