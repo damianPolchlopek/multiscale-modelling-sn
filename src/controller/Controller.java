@@ -23,6 +23,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -145,7 +146,7 @@ public class Controller extends ColorFunctionality implements Initializable {
         final int nextYPos = yPos >= yBoardDimension ? yPos : yPos + 1;
 
         // check if seed is clicked
-        if (clickedSeedId != -1){
+        if (clickedSeedId > 0){
             return isPixelOnBoundarySelectedSeed(new Pixel(xPos, yPos), new Pixel(nextXPos, yPos)) ||
                     isPixelOnBoundarySelectedSeed(new Pixel(xPos, yPos), new Pixel(xPos, nextYPos));
         }
@@ -191,6 +192,12 @@ public class Controller extends ColorFunctionality implements Initializable {
             final int xBoardDimension = parseTextFieldToInt(xSizeView);
             final int yBoardDimension = parseTextFieldToInt(ySizeView);
             board = new Board(xBoardDimension, yBoardDimension, canvas);
+        }
+        else{
+            final int xBoardDimension = (int) (canvas.getWidth())/5;
+            final int yBoardDimension = (int) (canvas.getHeight())/5;
+            this.xSizeView.setText(Integer.toString(xBoardDimension));
+            this.ySizeView.setText(Integer.toString(yBoardDimension));
         }
 
         if (sInclusionType.contains("Square")){
@@ -272,22 +279,59 @@ public class Controller extends ColorFunctionality implements Initializable {
     @FXML
     public void importFile() throws IOException {
         File file = selectFile(FileOperationType.Import);
-        String filePath = file.getPath();
-        FileSchema fileSchema = new FileSchema(filePath);
+        final String fileName = file.getName();
+        final String extension = fileName.substring(fileName.lastIndexOf("."));
+        final String TXT_EXTENSION = "txt";
+        final String BMP_EXTENSION = "bmp";
 
-        final int xBoardDimension = fileSchema.getxSize();
-        final int yBoardDimension = fileSchema.getySize();
-        board = new Board(xBoardDimension, yBoardDimension, canvas);
+        if (extension.contains(TXT_EXTENSION)){
+            String filePath = file.getPath();
+            FileSchema fileSchema = new FileSchema(filePath);
 
-        fileSchema.getPointList()
-            .forEach(field -> {
-                final int xRealPosition = field.getxPosition();
-                final int yRealPosition = field.getyPosition();
-                final java.awt.Color awtColor = field.getColor();
-                final Color fxColor = convertAwtColorToFxColor(awtColor);
+            final int xBoardDimension = fileSchema.getxSize();
+            final int yBoardDimension = fileSchema.getySize();
+            board = new Board(xBoardDimension, yBoardDimension, canvas);
 
-                board.fillPixel(xRealPosition, yRealPosition, fxColor);
-            });
+            fileSchema.getPointList()
+                    .forEach(field -> {
+                        final int xRealPosition = field.getxPosition();
+                        final int yRealPosition = field.getyPosition();
+                        final java.awt.Color awtColor = getMatchedColorToId(field.getId());
+                        final Color fxColor = convertAwtColorToFxColor(awtColor);
+
+                        board.fillPixel(xRealPosition, yRealPosition, fxColor);
+
+                        field.setColor(awtColor);
+                        board.getBoard()[yRealPosition][xRealPosition] = field;
+                    });
+
+
+        }
+        else if (extension.contains(BMP_EXTENSION)){
+            BufferedImage bufferedImage = ImageIO.read(file);
+            final int xBoardDimension =  bufferedImage.getWidth();
+            final int yBoardDimension = bufferedImage.getHeight();
+
+            board = new Board(xBoardDimension, yBoardDimension, canvas);
+
+            for (int y = 0; y < yBoardDimension; y++) {
+                for (int x = 0; x < xBoardDimension; x++) {
+                    int rgb=bufferedImage.getRGB(x,y);
+                    int red = (rgb >> 16) & 0x000000FF;
+                    int green = (rgb >>8 ) & 0x000000FF;
+                    int blue = (rgb) & 0x000000FF;
+                    double redDouble=red/255.0;
+                    double greenDouble=green/255.0;
+                    double blueDouble=blue/255.0;
+                    Color color=Color.color(redDouble,greenDouble,blueDouble);
+
+                    board.getCanvas().getGraphicsContext2D().setFill(color);
+                    board.getCanvas().getGraphicsContext2D().fillRect(x+200,y+400,1,1);
+                }
+            }
+        }
+
+
     }
 
     @FXML
