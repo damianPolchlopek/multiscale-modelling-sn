@@ -24,7 +24,7 @@ public class VonNeumann extends GrainGrowth {
 
             updateColoredPrevStepInNeighbour();
 
-            //iteracja po boardzie i pierwsza iteracja
+            //iteracja po boardzie
             for (int i = 0; i < board.getBoard().length; i++) {
                 for (int j = 0; j < board.getBoard()[0].length; j++) {
 
@@ -35,24 +35,19 @@ public class VonNeumann extends GrainGrowth {
                         int xPos = field.getxPosition();
                         int yPos = field.getyPosition();
 
-//                        System.out.println("------------------------------------------");
                         boolean ifFirstRuleCompleted = firstRule(xPos, yPos);
-//                        System.out.println("Rule 1: " + ifFirstRuleCompleted);
                         if (ifFirstRuleCompleted)
                             continue;
 
                         boolean ifSecondRuleCompleted = secondRule(xPos, yPos);
-//                        System.out.println("Rule 2: " + ifSecondRuleCompleted);
                         if (ifSecondRuleCompleted)
                             continue;
 
                         boolean ifThirdRuleCompleted = thirdRule(xPos, yPos);
-//                        System.out.println("Rule 3: " + ifThirdRuleCompleted);
                         if (ifThirdRuleCompleted)
                             continue;
 
                         boolean ifFourthRuleCompleted = fourthRule(xPos, yPos);
-//                        System.out.println("Rule 4: " + ifFourthRuleCompleted);
                         if (ifFourthRuleCompleted)
                             continue;
 
@@ -62,20 +57,9 @@ public class VonNeumann extends GrainGrowth {
                 }
             }
 
-            //board.getCanvas().getGraphicsContext2D().restore();
             board.redraw();
-
-
-//            try {
-//////                Thread.sleep(1000);
-////                TimeUnit.SECONDS.sleep(1);
-////            } catch (InterruptedException e) {
-////                e.printStackTrace();
-////            }
-
             isAllBoardFilled = checkIfBoardFilled();
             currentSimultionStep++;
-
 
 //            Thread t1 = new Thread(){
 //                @Override
@@ -86,25 +70,8 @@ public class VonNeumann extends GrainGrowth {
 //            };
 //            t1.start();
 
-
-
-//            new AnimationTimer() {
-//                @Override public void handle(long currentNanoTime) {
-//                    board.redraw();
-//
-//                    try {
-//                        Thread.sleep(100);
-//                    } catch (InterruptedException e) {
-//                        // Do nothing
-//                    }
-//                }
-//            }.start();
-
-
-            System.out.println("Przerysowuje");
         }
     }
-
 
     private HashMap<Integer, Integer> getMapForNeighborhood(final int currentXPosition, final int currentYPosition){
         final int prevXPosition = currentXPosition - 1;

@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 
 public class FileSchema extends ColorFunctionality {
 
-    private final String LINE_REGEX = "\\d \\d \\d \\d";
+    private final String LINE_REGEX = "\\d+ \\d+ \\d+ \\d+";
     private final Pattern PATTERN = Pattern.compile(LINE_REGEX);
 
     private int xSize;
@@ -53,8 +53,7 @@ public class FileSchema extends ColorFunctionality {
                 final int yPos  = Integer.parseInt(numbers[1]);
                 final int phase = Integer.parseInt(numbers[2]);
                 final int id    = Integer.parseInt(numbers[3]);
-                final Color color = getMatchedColorToId(id);
-                pointList.add(new Field(xPos, yPos, phase, id, color));
+                pointList.add(new Field(xPos, yPos, phase, id));
             }
         });
     }

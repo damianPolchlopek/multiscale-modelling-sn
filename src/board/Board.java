@@ -52,7 +52,7 @@ public class Board extends ColorFunctionality {
     }
 
 
-    void updateColorInBoardFields(){
+    private void updateColorInBoardFields(){
         java.awt.Color color;
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[0].length; j++) {
