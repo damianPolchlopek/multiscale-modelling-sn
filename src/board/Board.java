@@ -51,19 +51,32 @@ public class Board extends ColorFunctionality {
         }
     }
 
-    public void matchColorToModifiedFields(){
-        Arrays.stream(board).flatMap(Stream::of)
-            .forEach(field ->{
-                final java.awt.Color color = getMatchedColorToId(field.getId());
-                field.setColor(color);
-            });
+
+    void updateColorInBoardFields(){
+        java.awt.Color color;
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                int id = board[i][j].getId();
+                color = getColor(id);
+                board[i][j].setColor(color);
+            }
+        }
     }
 
     public void redraw(){
+
         Arrays.stream(board).flatMap(Stream::of)
-                .forEach(field -> fillPixel(field.getxPosition(),
-                        field.getyPosition(),
-                        convertAwtColorToFxColor(field.getColor())));
+                .forEach(field -> {
+
+                    final java.awt.Color color = getMatchedColorToId(field.getId());
+
+                    fillPixel(field.getxPosition(),
+                            field.getyPosition(),
+                            convertAwtColorToFxColor(color));
+
+                });
+
+        updateColorInBoardFields();
     }
 
     public String getBoardContent(){
@@ -87,4 +100,11 @@ public class Board extends ColorFunctionality {
         return board;
     }
 
+    public Canvas getCanvas() {
+        return canvas;
+    }
+
+    public void setCanvas(Canvas canvas) {
+        this.canvas = canvas;
+    }
 }

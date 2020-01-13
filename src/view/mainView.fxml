@@ -9,6 +9,7 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -26,11 +27,17 @@
       </MenuBar>
    </top>
    <center>
-      <Canvas fx:id="canvas" height="200.0" width="200.0" BorderPane.alignment="CENTER" />
+      <Canvas fx:id="canvas" height="415.0" onMouseClicked="#mouseClicked" width="436.0" BorderPane.alignment="CENTER" />
    </center>
    <left>
       <VBox fillWidth="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="375.0" prefWidth="108.0" BorderPane.alignment="CENTER">
          <children>
+            <HBox prefHeight="37.0" prefWidth="108.0">
+               <children>
+                  <Label text="Clicked: " />
+                  <Canvas fx:id="clickedColor" height="20.0" width="20.0" />
+               </children>
+            </HBox>
             <VBox prefHeight="171.0" prefWidth="100.0">
                <children>
                   <Label text="xSize" />
@@ -59,8 +66,9 @@
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
                   <Label text="Simulation steps" />
-                  <TextField fx:id="simultionStepNumber" />
-                  <Button mnemonicParsing="false" onAction="#draw" text="Debug" />
+                  <TextField fx:id="simulationStepNumber" />
+                  <Button mnemonicParsing="false" onAction="#drawBoundary" text="Boundary" />
+                  <Button mnemonicParsing="false" onAction="#clearSeed" text="Clear Seed" />
                </children></VBox>
          </children>
       </VBox>

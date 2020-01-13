@@ -3,10 +3,10 @@ package controller;
 
 import board.Board;
 import dto.Pixel;
-import helper.ColorFunctionality;
 import file.FileSchema;
 import grainGrowthAlgorithms.GrainGrowth;
 import grainGrowthAlgorithms.VonNeumann;
+import helper.ColorFunctionality;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
@@ -16,6 +16,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.WritableImage;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
@@ -32,9 +33,12 @@ import java.util.ResourceBundle;
 import java.util.stream.Stream;
 
 
+
 public class Controller extends ColorFunctionality implements Initializable {
 
     private Board board;
+
+    private int clickedSeedId;
 
     @FXML
     private BorderPane borderPane;
@@ -55,13 +59,17 @@ public class Controller extends ColorFunctionality implements Initializable {
     private TextField inclusionSize;
 
     @FXML
-    private TextField simultionStepNumber;
+    private TextField simulationStepNumber;
 
     @FXML
     private ChoiceBox<String> inclusionType;
 
     @FXML
     private Canvas canvas;
+
+    @FXML
+    private Canvas clickedColor;
+
 
 
     @Override
@@ -87,7 +95,7 @@ public class Controller extends ColorFunctionality implements Initializable {
             yPos = random.nextInt(yBoardDimension-incSize+1);
 
             if (isAfterAlgorithm){
-                while(!isCoordinateOnSeedBoundry(xPos, yPos)){
+                while(!isCoordinateOnSeedBoundary(xPos, yPos)){
                     xPos = random.nextInt(xBoardDimension-incSize+1);
                     yPos = random.nextInt(yBoardDimension-incSize+1);
                 }
@@ -98,7 +106,7 @@ public class Controller extends ColorFunctionality implements Initializable {
             yPos = random.nextInt(yBoardDimension-2*incSize) + incSize;
 
             if (isAfterAlgorithm){
-                while(!isCoordinateOnSeedBoundry(xPos, yPos)){
+                while(!isCoordinateOnSeedBoundary(xPos, yPos)){
                     xPos = random.nextInt(xBoardDimension-2*incSize) + incSize;
                     yPos = random.nextInt(yBoardDimension-2*incSize) + incSize;
                 }
@@ -129,28 +137,50 @@ public class Controller extends ColorFunctionality implements Initializable {
 //        return new Pixel(xPos, yPos);
 //    }
 
-    private boolean isCoordinateOnSeedBoundry(final int xPos, final int yPos){
+    private boolean isCoordinateOnSeedBoundary(final int xPos, final int yPos){
         final int xBoardDimension = parseTextFieldToInt(xSizeView);
-        final int nextXPos = xPos == xBoardDimension ? xPos : xPos + 1;
-        final int prevXPos = xPos == 0 ? xPos : xPos - 1;
+        final int nextXPos = xPos >= xBoardDimension ? xPos : xPos + 1;
 
         final int yBoardDimension = parseTextFieldToInt(ySizeView);
-        final int nextYPos = yPos == yBoardDimension ? yPos : yPos + 1;
-        final int prevYPos = yPos == 0 ? yPos : yPos - 1;
+        final int nextYPos = yPos >= yBoardDimension ? yPos : yPos + 1;
 
-        return isTwoPixelsHasDifferentId(new Pixel(xPos, yPos), new Pixel(nextXPos, yPos)) ||
-                isTwoPixelsHasDifferentId(new Pixel(xPos, yPos), new Pixel(prevXPos, yPos)) ||
-                isTwoPixelsHasDifferentId(new Pixel(xPos, yPos), new Pixel(xPos, nextYPos)) ||
-                isTwoPixelsHasDifferentId(new Pixel(xPos, yPos), new Pixel(xPos, prevYPos));
+        // check if seed is clicked
+        if (clickedSeedId != -1){
+            return isPixelOnBoundarySelectedSeed(new Pixel(xPos, yPos), new Pixel(nextXPos, yPos)) ||
+                    isPixelOnBoundarySelectedSeed(new Pixel(xPos, yPos), new Pixel(xPos, nextYPos));
+        }
+        else{
+            return isTwoPixelsHasDifferentId(new Pixel(xPos, yPos), new Pixel(nextXPos, yPos)) ||
+                    isTwoPixelsHasDifferentId(new Pixel(xPos, yPos), new Pixel(xPos, nextYPos));
+        }
     }
 
-    private boolean isTwoPixelsHasDifferentId(Pixel firstPixel, Pixel secondPixel){
-        return ( board.getBoard()[firstPixel.getyPosition()][firstPixel.getxPosition()].getId() !=
-                 board.getBoard()[secondPixel.getyPosition()][secondPixel.getxPosition()].getId() )
+    private boolean isPixelOnBoundarySelectedSeed(Pixel firstPixel, Pixel secondPixel){
+        if (board.getBoard()[firstPixel.getyPosition()][firstPixel.getxPosition()].getId() == clickedSeedId ||
+            board.getBoard()[secondPixel.getyPosition()][secondPixel.getxPosition()].getId() == clickedSeedId)
+
+            return isTwoPixelsHasDifferentId(firstPixel, secondPixel);
+
+        else
+            return false;
+    }
+
+    private boolean isTwoPixelsHasDifferentId(Pixel firstPixel, Pixel secondPixel) {
+        return (board.getBoard()[firstPixel.getyPosition()][firstPixel.getxPosition()].getId() !=
+                board.getBoard()[secondPixel.getyPosition()][secondPixel.getxPosition()].getId())
                 &&
-                ( board.getBoard()[firstPixel.getyPosition()][firstPixel.getxPosition()].getId() != 100 &&
-                  board.getBoard()[secondPixel.getyPosition()][secondPixel.getxPosition()].getId() != 100 );
+                (board.getBoard()[firstPixel.getyPosition()][firstPixel.getxPosition()].getId() != 100 &&
+                        board.getBoard()[secondPixel.getyPosition()][secondPixel.getxPosition()].getId() != 100);
     }
+
+    private boolean isCoordinateOnSelectedSeedBoundary(Pixel firstPixel, Pixel secondPixel) {
+        return (board.getBoard()[firstPixel.getyPosition()][firstPixel.getxPosition()].getId() != clickedSeedId &&
+                board.getBoard()[secondPixel.getyPosition()][secondPixel.getxPosition()].getId() == clickedSeedId)
+                ||
+                (board.getBoard()[firstPixel.getyPosition()][firstPixel.getxPosition()].getId() == clickedSeedId &&
+                board.getBoard()[secondPixel.getyPosition()][secondPixel.getxPosition()].getId() != clickedSeedId);
+    }
+
 
     @FXML
     public void addInclusions(){
@@ -270,10 +300,10 @@ public class Controller extends ColorFunctionality implements Initializable {
         if (board == null)
             board = new Board(xBoardDimension, yBoardDimension, canvas);
 
-        if (simultionStepNumber.getText().isEmpty())
+        if (simulationStepNumber.getText().isEmpty())
             simulationStep = -1;
         else
-            simulationStep = parseTextFieldToInt(simultionStepNumber);
+            simulationStep = parseTextFieldToInt(simulationStepNumber);
 
 
         // inicjacja algorytmu
@@ -386,11 +416,10 @@ public class Controller extends ColorFunctionality implements Initializable {
         if (board == null)
             board = new Board(xBoardDimension, yBoardDimension, canvas);
 
-        if (simultionStepNumber.getText().isEmpty())
+        if (simulationStepNumber.getText().isEmpty())
             simulationStep = -1;
         else
-            simulationStep = parseTextFieldToInt(simultionStepNumber);
-
+            simulationStep = parseTextFieldToInt(simulationStepNumber);
 
         // inicjacja algorytmu
         GrainGrowth grainAlgorithm =
@@ -404,13 +433,94 @@ public class Controller extends ColorFunctionality implements Initializable {
 
         // przelicz algorytm
         grainAlgorithm.calculate();
-
     }
-
 
     enum FileOperationType{
         Import,
         Export
     }
+
+    // ----------------------
+    @FXML
+    public void drawBoundary(){
+        final int xBoardDimension = parseTextFieldToInt(xSizeView);
+        final int yBoardDimension = parseTextFieldToInt(ySizeView);
+
+        // x = [0; max)
+        // y = [0; max)
+        for (int j = 0; j < xBoardDimension-1; j++) {
+            for (int i = 0; i < yBoardDimension-1; i++) {
+                if (isCoordinateOnSeedBoundary(j,i))
+                    fillBlackPixelOnBoard(j,i);
+            }
+        }
+
+        //y = max
+        for (int i = 0; i < xBoardDimension-1; i++) {
+
+            boolean isOtherPixel;
+            if (clickedSeedId == -1)
+                isOtherPixel = isTwoPixelsHasDifferentId(new Pixel(i, yBoardDimension-1),
+                        new Pixel(i+1, yBoardDimension-1));
+            else
+                isOtherPixel = isCoordinateOnSelectedSeedBoundary(new Pixel(i, yBoardDimension-1),
+                        new Pixel(i+1, yBoardDimension-1));
+
+            if (isOtherPixel){
+                fillBlackPixelOnBoard(i, yBoardDimension-1);
+            }
+        }
+
+        //x = max
+        for (int i = 0; i < yBoardDimension-1; i++) {
+
+            boolean isOtherPixel;
+            if (clickedSeedId == -1)
+                isOtherPixel = isTwoPixelsHasDifferentId(new Pixel(xBoardDimension-1, i),
+                        new Pixel(xBoardDimension-1, i+1));
+            else
+                isOtherPixel = isCoordinateOnSelectedSeedBoundary(new Pixel(xBoardDimension-1, i),
+                        new Pixel(xBoardDimension-1, i+1));
+
+            if (isOtherPixel){
+                fillBlackPixelOnBoard(xBoardDimension-1, i);
+            }
+        }
+
+        board.redraw();
+    }
+
+    @FXML
+    public void clearSeed(){
+        Arrays.stream(board.getBoard()).flatMap(Stream::of)
+                .forEach(field -> {
+                    if (field.getId() != 100)
+                        field.setId(0);
+                });
+
+        board.redraw();
+    }
+
+    @FXML
+    public void mouseClicked(MouseEvent event) {
+        final int boardPosX = (int) (Math.ceil(event.getX() / 5) - 1);
+        final int boardPosY = (int) (Math.ceil(event.getY() / 5) - 1);
+        final int canvasClickedColorXDimension = (int) clickedColor.getWidth();
+        final int canvasClickedColorYDimension = (int) clickedColor.getHeight();
+        final int tmpClickedValue = board.getBoard()[boardPosY][boardPosX].getId();
+
+        if (tmpClickedValue == clickedSeedId) {
+            clickedSeedId = -1;
+            clickedColor.getGraphicsContext2D().setFill(Color.WHITE);
+        } else {
+            clickedSeedId = tmpClickedValue;
+            final Color canvasClickedColor = convertAwtColorToFxColor(board.getBoard()[boardPosY][boardPosX].getColor());
+            clickedColor.getGraphicsContext2D().setFill(canvasClickedColor);
+        }
+
+        clickedColor.getGraphicsContext2D().fillRect(0, 0, canvasClickedColorXDimension,
+                canvasClickedColorYDimension);
+    }
+
 
 }
