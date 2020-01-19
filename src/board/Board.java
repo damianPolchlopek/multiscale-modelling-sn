@@ -104,7 +104,4 @@ public class Board extends ColorFunctionality {
         return canvas;
     }
 
-    public void setCanvas(Canvas canvas) {
-        this.canvas = canvas;
-    }
 }
