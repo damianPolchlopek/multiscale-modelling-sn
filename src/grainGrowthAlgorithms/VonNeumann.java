@@ -13,7 +13,7 @@ public class VonNeumann extends GrainGrowth {
 
     public void calculate(){
 
-        // algorytm rozrostu
+
         boolean isAllBoardFilled = checkIfBoardFilled();
         int currentSimultionStep = 0;
 
@@ -29,8 +29,13 @@ public class VonNeumann extends GrainGrowth {
                 for (int j = 0; j < board.getBoard()[0].length; j++) {
 
                     Field field = board.getBoard()[i][j];
-                    if (field.getId() == 0 && field.isColoredPrevStep() && field.getId() != 100) {
-//
+
+                    if (field.getId() == 0 &&
+                            field.isColoredPrevStep() &&
+                            field.getId() != 100 &&
+                            field.getId() != 101 &&
+                            field.getPhase() != 1) {
+
                         // algorytm sasiedztwa
                         int xPos = field.getxPosition();
                         int yPos = field.getyPosition();
@@ -121,7 +126,9 @@ public class VonNeumann extends GrainGrowth {
     }
 
     private void addElementToMap(HashMap<Integer, Integer> map, final int id){
-        if (id == 0)
+        if (id == WHITE_FIELD_ID ||
+            id == INCLUSION_ID ||
+            id == DUAL_PHASE_ID)
             return;
 
         int count = map.getOrDefault(id, 0);
@@ -137,11 +144,6 @@ public class VonNeumann extends GrainGrowth {
 
         return result;
     }
-
-
-
-
-
 
     private boolean firstRule(final int currentXPosition, final int currentYPosition){
         final int prevXPosition = currentXPosition - 1;

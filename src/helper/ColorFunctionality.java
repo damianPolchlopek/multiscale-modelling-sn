@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class ColorFunctionality {
 
-    private HashMap<Integer, Color> usedColor = new HashMap<>();
+    public HashMap<Integer, Color> usedColor = new HashMap<>();
 
     public ColorFunctionality() {
         usedColor.put(0, Color.WHITE);
