@@ -12,7 +12,7 @@ public class Field {
     private boolean coloredPrevStep;
 
 
-    Field(int xPosition, int yPosition, int phase, int id, Color color) {
+    public Field(int xPosition, int yPosition, int phase, int id, Color color) {
         this.xPosition = xPosition;
         this.yPosition = yPosition;
         this.phase = phase;

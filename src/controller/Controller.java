@@ -2,6 +2,7 @@ package controller;
 
 
 import board.Board;
+import board.Field;
 import dto.Pixel;
 import file.FileSchema;
 import grainGrowthAlgorithms.GrainGrowth;
@@ -29,12 +30,14 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 
 
 public class Controller extends ColorFunctionality implements Initializable {
+
+    private final String TXT_EXTENSION = "txt";
+    private final String BMP_EXTENSION = "bmp";
 
     private Board board;
 
@@ -282,8 +285,6 @@ public class Controller extends ColorFunctionality implements Initializable {
         File file = selectFile(FileOperationType.Import);
         final String fileName = file.getName();
         final String extension = fileName.substring(fileName.lastIndexOf("."));
-        final String TXT_EXTENSION = "txt";
-        final String BMP_EXTENSION = "bmp";
 
         if (extension.contains(TXT_EXTENSION)){
             String filePath = file.getPath();
@@ -310,13 +311,18 @@ public class Controller extends ColorFunctionality implements Initializable {
         }
         else if (extension.contains(BMP_EXTENSION)){
             BufferedImage bufferedImage = ImageIO.read(file);
-            final int xBoardDimension =  bufferedImage.getWidth();
-            final int yBoardDimension = bufferedImage.getHeight();
+
+            final int xRealBoardDimension = bufferedImage.getWidth();
+            final int yRealBoardDimension = bufferedImage.getHeight();
+            final int xBoardDimension = xRealBoardDimension/5;
+            final int yBoardDimension = yRealBoardDimension/5;
 
             board = new Board(xBoardDimension, yBoardDimension, canvas);
 
-            for (int y = 0; y < yBoardDimension; y++) {
-                for (int x = 0; x < xBoardDimension; x++) {
+            int tempId = 0;
+
+            for (int y = 0; y < yRealBoardDimension; y++) {
+                for (int x = 0; x < xRealBoardDimension; x++) {
                     int rgb=bufferedImage.getRGB(x,y);
                     int red = (rgb >> 16) & 0x000000FF;
                     int green = (rgb >>8 ) & 0x000000FF;
@@ -324,15 +330,36 @@ public class Controller extends ColorFunctionality implements Initializable {
                     double redDouble=red/255.0;
                     double greenDouble=green/255.0;
                     double blueDouble=blue/255.0;
-                    Color color=Color.color(redDouble,greenDouble,blueDouble);
+                    Color color = Color.color(redDouble,greenDouble,blueDouble);
+
+                    if (y%5 == 0 && x%5 == 0){
+                        final int yPos = y/5;
+                        final int xPos = x/5;
+
+                        java.awt.Color awtColor = new java.awt.Color(red, green, blue);
+
+                        if (!usedColor.containsValue(awtColor)){
+                            tempId++;
+                            usedColor.put(tempId, awtColor);
+                        }
+
+                        board.getBoard()[yPos][xPos] = new Field(xPos, yPos, 0, getKeyByValue(usedColor, awtColor), awtColor);
+                    }
 
                     board.getCanvas().getGraphicsContext2D().setFill(color);
-                    board.getCanvas().getGraphicsContext2D().fillRect(x+200,y+400,1,1);
+                    board.getCanvas().getGraphicsContext2D().fillRect(x,y,1,1);
                 }
             }
         }
+    }
 
-
+    private <T, E> T getKeyByValue(Map<T, E> map, E value) {
+        for (Map.Entry<T, E> entry : map.entrySet()) {
+            if (Objects.equals(value, entry.getValue())) {
+                return entry.getKey();
+            }
+        }
+        return null;
     }
 
     @FXML
@@ -350,7 +377,6 @@ public class Controller extends ColorFunctionality implements Initializable {
         else
             simulationStep = parseTextFieldToInt(simulationStepNumber);
 
-
         // inicjacja algorytmu
         GrainGrowth grainAlgorithm =
                 new VonNeumann(board,
@@ -362,7 +388,6 @@ public class Controller extends ColorFunctionality implements Initializable {
 
         // przelicz algorytm
         grainAlgorithm.calculate();
-
     }
 
     @FXML
@@ -370,8 +395,6 @@ public class Controller extends ColorFunctionality implements Initializable {
         final File file = selectFile(FileOperationType.Export);
         final String fileName = file.getName();
         final String extension = fileName.substring(fileName.lastIndexOf("."));
-        final String TXT_EXTENSION = "txt";
-        final String BMP_EXTENSION = "bmp";
 
         if (extension.contains(TXT_EXTENSION)){
             final String fileContent = createFileContent();
@@ -453,41 +476,11 @@ public class Controller extends ColorFunctionality implements Initializable {
         return Integer.valueOf(field.getText());
     }
 
-//    @FXML
-//    public void draw(){
-//        final int iSeedAmount = parseTextFieldToInt(seedAmount);
-//        final int xBoardDimension = parseTextFieldToInt(xSizeView);
-//        final int yBoardDimension = parseTextFieldToInt(ySizeView);
-//        int simulationStep;
-//
-//        if (board == null)
-//            board = new Board(xBoardDimension, yBoardDimension, canvas);
-//
-//        if (simulationStepNumber.getText().isEmpty())
-//            simulationStep = -1;
-//        else
-//            simulationStep = parseTextFieldToInt(simulationStepNumber);
-//
-//        // inicjacja algorytmu
-//        GrainGrowth grainAlgorithm =
-//                new VonNeumann(board,
-//                        iSeedAmount,
-//                        simulationStep);
-//
-//        // wylosuj ziarna
-//        board.getBoard()[2][2].setId(1);
-//        board.getBoard()[7][7].setId(2);
-//
-//        // przelicz algorytm
-//        grainAlgorithm.calculate();
-//    }
-
     enum FileOperationType{
         Import,
         Export
     }
 
-    // ----------------------
     @FXML
     public void drawBoundary(){
         final int xBoardDimension = parseTextFieldToInt(xSizeView);
@@ -601,7 +594,5 @@ public class Controller extends ColorFunctionality implements Initializable {
 
         board.redraw();
     }
-
-
 
 }
