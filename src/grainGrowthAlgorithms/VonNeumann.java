@@ -4,6 +4,7 @@ import board.Board;
 import board.Field;
 
 import java.util.HashMap;
+import java.util.Random;
 
 public class VonNeumann extends GrainGrowth {
 
@@ -259,17 +260,32 @@ public class VonNeumann extends GrainGrowth {
     }
 
     private boolean fourthRule(final int currentXPosition, final int currentYPosition){
-        final int PROBABILITY = 10;
+        final int PROBABILITY = 50;
         final HashMap<Integer, Integer> neighborhood = getMapForNeighborhood(currentXPosition, currentYPosition);
         final int mostFrequentNeighbor = getMostFrequentNeighbor(currentXPosition, currentYPosition);
 
-        if (mostFrequentNeighbor == -1)
-            return false;
+
+        Random r = new Random();
+        int randomValue = r.nextInt(100);
+
+
+//        if (mostFrequentNeighbor == -1){
+//            System.out.println("[fourth rule] false");
+//            return false;
+//        }
+
 
         final int amountOfNeighbor = neighborhood.get(mostFrequentNeighbor);
         final int countedProbability = amountOfNeighbor * 100 / 8;
 
-        if (countedProbability >= PROBABILITY){
+//        System.out.println("----------------------------------------");
+//        System.out.println("x: " + currentXPosition + ", y: " + currentYPosition);
+//        System.out.println("Most frequent: " + mostFrequentNeighbor);
+//        System.out.println("Amount of neighbor: " + amountOfNeighbor);
+//        System.out.println("Probability: " + countedProbability);
+//        System.out.println("Random value: " + randomValue);
+
+        if (randomValue >= PROBABILITY){
             board.getBoard()[currentYPosition][currentXPosition].setId(mostFrequentNeighbor);
             return true;
         }
