@@ -88,35 +88,51 @@ public class VonNeumann extends GrainGrowth {
 
         //x..
         if (prevYPosition >= 0 && prevXPosition >= 0)
-            addElementToMap(result, board.getBoard()[prevYPosition][prevXPosition].getId());
+            addElementToMap(result,
+                    board.getBoard()[prevYPosition][prevXPosition].getId(),
+                    board.getBoard()[prevYPosition][prevXPosition].getPhase());
 
         //.x.
         if (prevYPosition >= 0 && currentXPosition >= 0)
-            addElementToMap(result, board.getBoard()[prevYPosition][currentXPosition].getId());
+            addElementToMap(result,
+                    board.getBoard()[prevYPosition][currentXPosition].getId(),
+                    board.getBoard()[prevYPosition][currentXPosition].getPhase());
 
         //..x
         if (prevYPosition >= 0 && nextXPosition < xBoardDimension)
-            addElementToMap(result, board.getBoard()[prevYPosition][nextXPosition].getId());
+            addElementToMap(result,
+                    board.getBoard()[prevYPosition][nextXPosition].getId(),
+                    board.getBoard()[prevYPosition][nextXPosition].getPhase());
 
         //x..
         if (currentYPosition >= 0 && prevXPosition >= 0)
-            addElementToMap(result, board.getBoard()[currentYPosition][prevXPosition].getId());
+            addElementToMap(result,
+                    board.getBoard()[currentYPosition][prevXPosition].getId(),
+                    board.getBoard()[currentYPosition][prevXPosition].getPhase());
 
         //..x
         if (currentYPosition >= 0 && nextXPosition < xBoardDimension)
-            addElementToMap(result, board.getBoard()[currentYPosition][nextXPosition].getId());
+            addElementToMap(result,
+                    board.getBoard()[currentYPosition][nextXPosition].getId(),
+                    board.getBoard()[currentYPosition][nextXPosition].getPhase());
 
         //x..
         if (nextYPosition < yBoardDimension && prevXPosition >= 0)
-            addElementToMap(result, board.getBoard()[nextYPosition][prevXPosition].getId());
+            addElementToMap(result,
+                    board.getBoard()[nextYPosition][prevXPosition].getId(),
+                    board.getBoard()[nextYPosition][prevXPosition].getPhase());
 
         //.x.
         if (nextYPosition < yBoardDimension && currentXPosition >= 0)
-            addElementToMap(result, board.getBoard()[nextYPosition][currentXPosition].getId());
+            addElementToMap(result,
+                    board.getBoard()[nextYPosition][currentXPosition].getId(),
+                    board.getBoard()[nextYPosition][currentXPosition].getPhase());
 
         //..x
         if (nextYPosition < yBoardDimension && nextXPosition < xBoardDimension)
-            addElementToMap(result, board.getBoard()[nextYPosition][nextXPosition].getId());
+            addElementToMap(result,
+                    board.getBoard()[nextYPosition][nextXPosition].getId(),
+                    board.getBoard()[nextYPosition][nextXPosition].getPhase());
 
         return result;
     }
@@ -126,11 +142,17 @@ public class VonNeumann extends GrainGrowth {
         return getMostFrequentKeyFromMap(res);
     }
 
-    private void addElementToMap(HashMap<Integer, Integer> map, final int id){
+    private void addElementToMap(HashMap<Integer, Integer> map, final int id, final int phase){
+        if (phase == 1)
+            System.out.println("[add element to hashmap]Phase: " + phase);
+
         if (id == WHITE_FIELD_ID ||
             id == INCLUSION_ID ||
-            id == DUAL_PHASE_ID)
+            id == DUAL_PHASE_ID ||
+            phase == 1){
             return;
+        }
+
 
         int count = map.getOrDefault(id, 0);
         map.put(id, count + 1);
@@ -155,35 +177,51 @@ public class VonNeumann extends GrainGrowth {
 
         //x..
         if (prevYPosition >= 0 && prevXPosition >= 0)
-            addElementToMap(neighborhood, board.getBoard()[prevYPosition][prevXPosition].getId());
+            addElementToMap(neighborhood,
+                    board.getBoard()[prevYPosition][prevXPosition].getId(),
+                    board.getBoard()[prevYPosition][prevXPosition].getPhase());
 
         //.x.
         if (prevYPosition >= 0 && currentXPosition >= 0)
-            addElementToMap(neighborhood, board.getBoard()[prevYPosition][currentXPosition].getId());
+            addElementToMap(neighborhood,
+                    board.getBoard()[prevYPosition][currentXPosition].getId(),
+                    board.getBoard()[prevYPosition][currentXPosition].getPhase());
 
         //..x
         if (prevYPosition >= 0 && nextXPosition < xBoardDimension)
-            addElementToMap(neighborhood, board.getBoard()[prevYPosition][nextXPosition].getId());
+            addElementToMap(neighborhood,
+                    board.getBoard()[prevYPosition][nextXPosition].getId(),
+                    board.getBoard()[prevYPosition][nextXPosition].getPhase());
 
         //x..
         if (currentYPosition >= 0 && prevXPosition >= 0)
-            addElementToMap(neighborhood, board.getBoard()[currentYPosition][prevXPosition].getId());
+            addElementToMap(neighborhood,
+                    board.getBoard()[currentYPosition][prevXPosition].getId(),
+                    board.getBoard()[currentYPosition][prevXPosition].getPhase());
 
         //..x
         if (currentYPosition >= 0 && nextXPosition < xBoardDimension)
-            addElementToMap(neighborhood, board.getBoard()[currentYPosition][nextXPosition].getId());
+            addElementToMap(neighborhood,
+                    board.getBoard()[currentYPosition][nextXPosition].getId(),
+                    board.getBoard()[currentYPosition][nextXPosition].getPhase());
 
         //x..
         if (nextYPosition < yBoardDimension && prevXPosition >= 0)
-            addElementToMap(neighborhood, board.getBoard()[nextYPosition][prevXPosition].getId());
+            addElementToMap(neighborhood,
+                    board.getBoard()[nextYPosition][prevXPosition].getId(),
+                    board.getBoard()[nextYPosition][prevXPosition].getPhase());
 
         //.x.
         if (nextYPosition < yBoardDimension && currentXPosition >= 0)
-            addElementToMap(neighborhood, board.getBoard()[nextYPosition][currentXPosition].getId());
+            addElementToMap(neighborhood,
+                    board.getBoard()[nextYPosition][currentXPosition].getId(),
+                    board.getBoard()[nextYPosition][currentXPosition].getPhase());
 
         //..x
         if (nextYPosition < yBoardDimension && nextXPosition < xBoardDimension)
-            addElementToMap(neighborhood, board.getBoard()[nextYPosition][nextXPosition].getId());
+            addElementToMap(neighborhood,
+                    board.getBoard()[nextYPosition][nextXPosition].getId(),
+                    board.getBoard()[nextYPosition][nextXPosition].getPhase());
 
         int mostFrequentValue = getMostFrequentKeyFromMap(neighborhood);
         if (mostFrequentValue >= 5){
@@ -202,19 +240,27 @@ public class VonNeumann extends GrainGrowth {
 
         //-1 .x.
         if (prevYPosition >= 0 && currentXPosition >= 0)
-            addElementToMap(nearestNeighbor, board.getBoard()[prevYPosition][currentXPosition].getId());
+            addElementToMap(nearestNeighbor,
+                    board.getBoard()[prevYPosition][currentXPosition].getId(),
+                    board.getBoard()[prevYPosition][currentXPosition].getPhase());
 
         //0 x..
         if (currentYPosition >= 0 && prevXPosition >= 0)
-            addElementToMap(nearestNeighbor, board.getBoard()[currentYPosition][prevXPosition].getId());
+            addElementToMap(nearestNeighbor,
+                    board.getBoard()[currentYPosition][prevXPosition].getId(),
+                    board.getBoard()[currentYPosition][prevXPosition].getPhase());
 
         //0 ..x
         if (currentYPosition >= 0 && nextXPosition < xBoardDimension)
-            addElementToMap(nearestNeighbor, board.getBoard()[currentYPosition][nextXPosition].getId());
+            addElementToMap(nearestNeighbor,
+                    board.getBoard()[currentYPosition][nextXPosition].getId(),
+                    board.getBoard()[currentYPosition][nextXPosition].getPhase());
 
         //+1 .x.
         if (nextYPosition < yBoardDimension && currentXPosition >= 0)
-            addElementToMap(nearestNeighbor, board.getBoard()[nextYPosition][currentXPosition].getId());
+            addElementToMap(nearestNeighbor,
+                    board.getBoard()[nextYPosition][currentXPosition].getId(),
+                    board.getBoard()[nextYPosition][currentXPosition].getPhase());
 
         int mostFrequentValue = getMostFrequentKeyFromMap(nearestNeighbor);
         if (mostFrequentValue >= 3){
@@ -235,19 +281,27 @@ public class VonNeumann extends GrainGrowth {
 
         //-1 x..
         if (prevYPosition >= 0 && prevXPosition >= 0)
-            addElementToMap(furtherNeighbor, board.getBoard()[prevYPosition][prevXPosition].getId());
+            addElementToMap(furtherNeighbor,
+                    board.getBoard()[prevYPosition][prevXPosition].getId(),
+                    board.getBoard()[prevYPosition][prevXPosition].getPhase());
 
         //-1 ..x
         if (prevYPosition >= 0 && nextXPosition < xBoardDimension)
-            addElementToMap(furtherNeighbor,  board.getBoard()[prevYPosition][nextXPosition].getId());
+            addElementToMap(furtherNeighbor,
+                    board.getBoard()[prevYPosition][nextXPosition].getId(),
+                    board.getBoard()[prevYPosition][nextXPosition].getPhase());
 
         //+1 x..
         if (nextYPosition < yBoardDimension && prevXPosition >= 0)
-            addElementToMap(furtherNeighbor,  board.getBoard()[nextYPosition][prevXPosition].getId());
+            addElementToMap(furtherNeighbor,
+                    board.getBoard()[nextYPosition][prevXPosition].getId(),
+                    board.getBoard()[nextYPosition][prevXPosition].getPhase());
 
         //+1 ..x
         if (nextYPosition < yBoardDimension && nextXPosition < xBoardDimension)
-            addElementToMap(furtherNeighbor,  board.getBoard()[nextYPosition][nextXPosition].getId());
+            addElementToMap(furtherNeighbor,
+                    board.getBoard()[nextYPosition][nextXPosition].getId(),
+                    board.getBoard()[nextYPosition][nextXPosition].getPhase());
 
         int mostFrequentValue = getMostFrequentKeyFromMap(furtherNeighbor);
         if (mostFrequentValue >= 3){
