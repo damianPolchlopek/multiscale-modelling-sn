@@ -11,6 +11,7 @@ public class ColorFunctionality {
     public ColorFunctionality() {
         usedColor.put(0, Color.WHITE);
         usedColor.put(100, Color.BLACK);
+        usedColor.put(101, Color.PINK);
     }
 
     private java.awt.Color getRandomColor(){
