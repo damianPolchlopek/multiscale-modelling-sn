@@ -32,12 +32,6 @@
    <left>
       <VBox fillWidth="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="375.0" prefWidth="108.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox prefHeight="37.0" prefWidth="108.0">
-               <children>
-                  <Label text="Clicked: " />
-                  <Canvas fx:id="clickedColor" height="20.0" width="20.0" />
-               </children>
-            </HBox>
             <VBox prefHeight="218.0" prefWidth="100.0">
                <children>
                   <Label text="LAB 1" />
@@ -65,15 +59,22 @@
                   <ChoiceBox fx:id="inclusionType" prefWidth="150.0" />
                   <Button mnemonicParsing="false" onAction="#addInclusions" text="Add inclusions" />
                </children></VBox>
-            <VBox prefHeight="200.0" prefWidth="100.0">
+            <VBox prefHeight="80.0" prefWidth="100.0">
                <children>
                   <Label text="LAB 4" />
-                  <Button mnemonicParsing="false" onAction="#clearSeedWithoutPhase" text="Clear not phase" />
+                  <Button mnemonicParsing="false" onAction="#clearSeedWithoutSubstructure" prefHeight="25.0" prefWidth="90.0" text="Substracture" />
+                  <Button layoutX="10.0" layoutY="27.0" mnemonicParsing="false" onAction="#clearSeedWithoutPhase" prefHeight="25.0" prefWidth="90.0" text="Dual phase" />
                </children>
             </VBox>
             <VBox prefHeight="113.0" prefWidth="100.0">
                <children>
                   <Label text="LAB 5" />
+                  <HBox prefHeight="37.0" prefWidth="108.0">
+                     <children>
+                        <Label text="Clicked: " />
+                        <Canvas fx:id="clickedColor" height="20.0" width="20.0" />
+                     </children>
+                  </HBox>
                   <Label text="Simulation steps" />
                   <TextField fx:id="simulationStepNumber" />
                   <Button mnemonicParsing="false" onAction="#drawBoundary" text="Boundary" />

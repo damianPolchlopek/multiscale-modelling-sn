@@ -4,7 +4,6 @@ import board.Board;
 import board.Field;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Random;
 import java.util.stream.Stream;
 
@@ -35,20 +34,40 @@ public abstract class GrainGrowth {
                 .allMatch((field) -> field.getId() != 0);
     }
 
+    boolean isSubstractedButtonIsClicked(){
+        return Arrays.stream(board.getBoard()).flatMap(Stream::of)
+                .anyMatch((field) -> field.getPhase() == 1);
+    }
+
     public void randomSeed(){
         Random random = new Random();
         int xRand;
         int yRand;
-        for (int i = 0; i < seedAmount; i++) {
-            xRand = random.nextInt(xBoardDimension);
-            yRand = random.nextInt(yBoardDimension);
 
-            if (board.getBoard()[yRand][xRand].getId() == 0)
-                board.getBoard()[yRand][xRand].setId(i+1);
-            else
-                i--;
+        if (isSubstractedButtonIsClicked()){
+            for (int i = seedAmount; i < 2*seedAmount; i++) {
+                xRand = random.nextInt(xBoardDimension);
+                yRand = random.nextInt(yBoardDimension);
 
+                if (board.getBoard()[yRand][xRand].getId() == 0)
+                    board.getBoard()[yRand][xRand].setId(i+1);
+                else
+                    i--;
+            }
         }
+        else {
+            for (int i = 0; i < seedAmount; i++) {
+                xRand = random.nextInt(xBoardDimension);
+                yRand = random.nextInt(yBoardDimension);
+
+                if (board.getBoard()[yRand][xRand].getId() == 0)
+                    board.getBoard()[yRand][xRand].setId(i+1);
+                else
+                    i--;
+            }
+        }
+
+
     }
 
     void updateColoredPrevStepInNeighbour() {

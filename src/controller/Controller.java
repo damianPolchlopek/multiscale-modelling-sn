@@ -595,4 +595,25 @@ public class Controller extends ColorFunctionality implements Initializable {
         board.redraw();
     }
 
+    @FXML
+    public void clearSeedWithoutSubstructure(){
+
+        Arrays.stream(board.getBoard()).flatMap(Stream::of)
+                .forEach(field -> {
+                    if (clickedSeeds.contains(field.getId()))
+                        field.setPhase(1);
+                });
+
+        Arrays.stream(board.getBoard()).flatMap(Stream::of)
+                .forEach(field -> {
+                    if (field.getPhase() != 1){
+                        field.setId(0);
+                        field.setColoredPrevStep(false);
+                    }
+                });
+
+        board.redraw();
+    }
+
+
 }
