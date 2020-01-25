@@ -38,11 +38,16 @@ public class Controller extends ColorFunctionality implements Initializable {
 
     private final String TXT_EXTENSION = "txt";
     private final String BMP_EXTENSION = "bmp";
+    private final String SQUARE_INCLUSION_NAME = "Square";
+
+    private int xBoardDimension;
+    private int yBoardDimension;
+    private int nucleonsAmount;
+    private int inclusionsAmount;
+    private int inclusionSize;
 
     private Board board;
-
     private int clickedPrevSeedId;
-
     private List<Integer> clickedSeeds = new ArrayList<>();
 
     @FXML
@@ -55,13 +60,13 @@ public class Controller extends ColorFunctionality implements Initializable {
     private TextField ySizeView;
 
     @FXML
-    private TextField seedAmount;
+    private TextField nucleonsAmountView;
 
     @FXML
-    private TextField inclusionAmount;
+    private TextField inclusionsAmountView;
 
     @FXML
-    private TextField inclusionSize;
+    private TextField inclusionSizeView;
 
     @FXML
     private TextField simulationStepNumber;
@@ -76,7 +81,6 @@ public class Controller extends ColorFunctionality implements Initializable {
     private Canvas clickedColor;
 
 
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         ObservableList<String> availableChoices = FXCollections.observableArrayList("Square", "Circle");
@@ -84,10 +88,38 @@ public class Controller extends ColorFunctionality implements Initializable {
         inclusionType.getSelectionModel().select("Square");
     }
 
+    @FXML
+    public void xSizeListener(){
+        this.xBoardDimension = parseTextFieldToInt(this.xSizeView);
+    }
+
+    @FXML
+    public void ySizeListener(){
+        this.yBoardDimension = parseTextFieldToInt(this.ySizeView);
+    }
+
+    @FXML
+    public void nucleonAmountListener(){
+        this.nucleonsAmount = parseTextFieldToInt(this.nucleonsAmountView);
+    }
+
+    @FXML
+    public void inclusionAmountListener(){
+        this.inclusionsAmount = parseTextFieldToInt(this.inclusionsAmountView);
+    }
+
+    @FXML
+    public void inclusionSizeListener(){
+        this.inclusionSize = parseTextFieldToInt(this.inclusionSizeView);
+    }
+
+    private int parseTextFieldToInt(TextField field){
+        return field.getText().isEmpty() ? 0 : Integer.valueOf(field.getText());
+    }
+
+
+
     private Pixel determineCoordinate(){
-        final int xBoardDimension = parseTextFieldToInt(xSizeView);
-        final int yBoardDimension = parseTextFieldToInt(ySizeView);
-        final int incSize = parseTextFieldToInt(inclusionSize);
         final String incType = inclusionType.getValue();
         final Random random = new Random();
 
@@ -96,24 +128,24 @@ public class Controller extends ColorFunctionality implements Initializable {
 
         int xPos, yPos;
         if (incType.equals("Square")){
-            xPos = random.nextInt(xBoardDimension-incSize+1);
-            yPos = random.nextInt(yBoardDimension-incSize+1);
+            xPos = random.nextInt(xBoardDimension-inclusionSize+1);
+            yPos = random.nextInt(yBoardDimension-inclusionSize+1);
 
             if (isAfterAlgorithm){
                 while(!isCoordinateOnSeedBoundary(xPos, yPos)){
-                    xPos = random.nextInt(xBoardDimension-incSize+1);
-                    yPos = random.nextInt(yBoardDimension-incSize+1);
+                    xPos = random.nextInt(xBoardDimension-inclusionSize+1);
+                    yPos = random.nextInt(yBoardDimension-inclusionSize+1);
                 }
             }
         }
         else{
-            xPos = random.nextInt(xBoardDimension-2*incSize) + incSize;
-            yPos = random.nextInt(yBoardDimension-2*incSize) + incSize;
+            xPos = random.nextInt(xBoardDimension-2*inclusionSize) + inclusionSize;
+            yPos = random.nextInt(yBoardDimension-2*inclusionSize) + inclusionSize;
 
             if (isAfterAlgorithm){
                 while(!isCoordinateOnSeedBoundary(xPos, yPos)){
-                    xPos = random.nextInt(xBoardDimension-2*incSize) + incSize;
-                    yPos = random.nextInt(yBoardDimension-2*incSize) + incSize;
+                    xPos = random.nextInt(xBoardDimension-2*inclusionSize) + inclusionSize;
+                    yPos = random.nextInt(yBoardDimension-2*inclusionSize) + inclusionSize;
                 }
             }
         }
@@ -143,10 +175,7 @@ public class Controller extends ColorFunctionality implements Initializable {
 //    }
 
     private boolean isCoordinateOnSeedBoundary(final int xPos, final int yPos){
-        final int xBoardDimension = parseTextFieldToInt(xSizeView);
         final int nextXPos = xPos >= xBoardDimension ? xPos : xPos + 1;
-
-        final int yBoardDimension = parseTextFieldToInt(ySizeView);
         final int nextYPos = yPos >= yBoardDimension ? yPos : yPos + 1;
 
         // check if seed is clicked
@@ -162,7 +191,7 @@ public class Controller extends ColorFunctionality implements Initializable {
 
     private boolean isPixelOnBoundarySelectedSeed(Pixel firstPixel, Pixel secondPixel){
         if (board.getBoard()[firstPixel.getyPosition()][firstPixel.getxPosition()].getId() == clickedPrevSeedId ||
-            board.getBoard()[secondPixel.getyPosition()][secondPixel.getxPosition()].getId() == clickedPrevSeedId)
+                board.getBoard()[secondPixel.getyPosition()][secondPixel.getxPosition()].getId() == clickedPrevSeedId)
 
             return isTwoPixelsHasDifferentId(firstPixel, secondPixel);
 
@@ -183,32 +212,26 @@ public class Controller extends ColorFunctionality implements Initializable {
                 board.getBoard()[secondPixel.getyPosition()][secondPixel.getxPosition()].getId() == clickedPrevSeedId)
                 ||
                 (board.getBoard()[firstPixel.getyPosition()][firstPixel.getxPosition()].getId() == clickedPrevSeedId &&
-                board.getBoard()[secondPixel.getyPosition()][secondPixel.getxPosition()].getId() != clickedPrevSeedId);
+                        board.getBoard()[secondPixel.getyPosition()][secondPixel.getxPosition()].getId() != clickedPrevSeedId);
     }
-
 
     @FXML
     public void addInclusions(){
-        final int iInclusionAmount = parseTextFieldToInt(inclusionAmount);
         final String sInclusionType = inclusionType.getSelectionModel().getSelectedItem();
 
         if (board == null) {
-            final int xBoardDimension = parseTextFieldToInt(xSizeView);
-            final int yBoardDimension = parseTextFieldToInt(ySizeView);
             board = new Board(xBoardDimension, yBoardDimension, canvas);
         }
         else{
-            final int xBoardDimension = (int) (canvas.getWidth())/5;
-            final int yBoardDimension = (int) (canvas.getHeight())/5;
             this.xSizeView.setText(Integer.toString(xBoardDimension));
             this.ySizeView.setText(Integer.toString(yBoardDimension));
         }
 
-        if (sInclusionType.contains("Square")){
-            addSquareInclusions(iInclusionAmount);
+        if (sInclusionType.contains(SQUARE_INCLUSION_NAME)){
+            addSquareInclusions(inclusionsAmount);
         }
         else{
-            addCircleInclusions(iInclusionAmount);
+            addCircleInclusions(inclusionsAmount);
         }
     }
 
@@ -216,17 +239,16 @@ public class Controller extends ColorFunctionality implements Initializable {
         for (int i = 0; i < iInclusionAmount; i++) {
             Pixel inclusionCoordinate = determineCoordinate();
             addCircleInclusion(inclusionCoordinate.getxPosition(),
-                                inclusionCoordinate.getyPosition());
+                    inclusionCoordinate.getyPosition());
         }
 
         board.redraw();
     }
 
     private void addCircleInclusion(int x0, int y0) {
-        final int iInclusionSize = parseTextFieldToInt(inclusionSize);
-        int x = iInclusionSize;
+        int x = inclusionSize;
         int y = 0;
-        int xChange = 1 - (iInclusionSize << 1);
+        int xChange = 1 - (inclusionSize << 1);
         int yChange = 0;
         int radiusError = 0;
 
@@ -256,16 +278,15 @@ public class Controller extends ColorFunctionality implements Initializable {
         for (int i = 0; i < iInclusionAmount; i++) {
             Pixel inclusionCoordinate = determineCoordinate();
             addSquareInclusion(inclusionCoordinate.getxPosition(),
-                                inclusionCoordinate.getyPosition());
+                    inclusionCoordinate.getyPosition());
         }
 
         board.redraw();
     }
 
     private void addSquareInclusion(int xRand, int yRand) {
-        final int iInclusionSize = parseTextFieldToInt(inclusionSize);
-        final int yBoundary = yRand + iInclusionSize;
-        final int xBoundary = xRand + iInclusionSize;
+        final int yBoundary = yRand + inclusionSize;
+        final int xBoundary = xRand + inclusionSize;
 
         for (int i = yRand; i < yBoundary; i++) {
             for (int j = xRand; j < xBoundary; j++) {
@@ -306,8 +327,6 @@ public class Controller extends ColorFunctionality implements Initializable {
                         field.setColor(awtColor);
                         board.getBoard()[yRealPosition][xRealPosition] = field;
                     });
-
-
         }
         else if (extension.contains(BMP_EXTENSION)){
             BufferedImage bufferedImage = ImageIO.read(file);
@@ -364,10 +383,11 @@ public class Controller extends ColorFunctionality implements Initializable {
 
     @FXML
     public void generateBoard(){
-        final int iSeedAmount = parseTextFieldToInt(seedAmount);
-        final int xBoardDimension = parseTextFieldToInt(xSizeView);
-        final int yBoardDimension = parseTextFieldToInt(ySizeView);
         int simulationStep;
+
+        System.out.println("xBoardDimension: " + xBoardDimension);
+        System.out.println("yBoardDimension: " + yBoardDimension);
+        System.out.println("nucleonsAmount: " + nucleonsAmount);
 
         if (board == null)
             board = new Board(xBoardDimension, yBoardDimension, canvas);
@@ -380,8 +400,8 @@ public class Controller extends ColorFunctionality implements Initializable {
         // inicjacja algorytmu
         GrainGrowth grainAlgorithm =
                 new VonNeumann(board,
-                            iSeedAmount,
-                            simulationStep);
+                        nucleonsAmount,
+                        simulationStep);
 
         // wylosuj ziarna
         grainAlgorithm.randomSeed();
@@ -472,9 +492,7 @@ public class Controller extends ColorFunctionality implements Initializable {
         board.redraw();
     }
 
-    private int parseTextFieldToInt(TextField field){
-        return Integer.valueOf(field.getText());
-    }
+
 
     enum FileOperationType{
         Import,
@@ -483,8 +501,6 @@ public class Controller extends ColorFunctionality implements Initializable {
 
     @FXML
     public void drawBoundary(){
-        final int xBoardDimension = parseTextFieldToInt(xSizeView);
-        final int yBoardDimension = parseTextFieldToInt(ySizeView);
 
         // x = [0; max)
         // y = [0; max)
@@ -570,8 +586,6 @@ public class Controller extends ColorFunctionality implements Initializable {
 
         clickedColor.getGraphicsContext2D().fillRect(0, 0, canvasClickedColorXDimension,
                 canvasClickedColorYDimension);
-
-        System.out.println("Size of list: " + clickedSeeds.size() + ", clcked id: " + tmpClickedValue + ", isOnList: " + clickedSeeds.contains(clickedPrevSeedId));
     }
 
     @FXML
