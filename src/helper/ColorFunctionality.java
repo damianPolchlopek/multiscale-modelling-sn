@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class ColorFunctionality {
 
-    public HashMap<Integer, Color> usedColor = new HashMap<>();
+    private HashMap<Integer, Color> usedColor = new HashMap<>();
 
     public ColorFunctionality() {
         usedColor.put(0, Color.WHITE);
@@ -22,7 +22,7 @@ public class ColorFunctionality {
         return new java.awt.Color(r, g, b);
     }
 
-    protected java.awt.Color getMatchedColorToId(int fieldId){
+    public java.awt.Color getMatchedColorToId(int fieldId){
         final boolean isIdExist = usedColor.containsKey(fieldId);
         java.awt.Color color;
         if (isIdExist){
@@ -35,7 +35,7 @@ public class ColorFunctionality {
         return color;
     }
 
-    protected javafx.scene.paint.Color convertAwtColorToFxColor(java.awt.Color awtColor){
+    public javafx.scene.paint.Color convertAwtColorToFxColor(java.awt.Color awtColor){
         int r = awtColor.getRed();
         int g = awtColor.getGreen();
         int b = awtColor.getBlue();
@@ -44,8 +44,12 @@ public class ColorFunctionality {
         return javafx.scene.paint.Color.rgb(r, g, b, opacity);
     }
 
-    protected Color getColor(int id){
+    public Color getColor(int id){
         return usedColor.get(id);
+    }
+
+    public HashMap<Integer, Color> getUsedColor() {
+        return usedColor;
     }
 
 }
