@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 
-public class FileOperation {
+public abstract class FileOperation {
 
     private BorderPane borderPane;
     protected Board board;

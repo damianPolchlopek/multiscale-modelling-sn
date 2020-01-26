@@ -6,8 +6,8 @@ import code.file.operation.FileExport;
 import code.file.operation.FileImport;
 import code.grainGrowthAlgorithms.GrainGrowth;
 import code.helper.ColorFunctionality;
-import code.inclusions.Boundary;
-import code.inclusions.Inclusions;
+import code.newElement.Boundary;
+import code.newElement.Inclusions;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -71,7 +71,6 @@ public class Controller implements Initializable {
     @FXML
     private Canvas clickedColor;
 
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         final String SQUARE_INCLUSION_NAME = "Square";
@@ -114,7 +113,7 @@ public class Controller implements Initializable {
     }
 
     private int parseTextFieldToInt(TextField field){
-        return field.getText().isEmpty() ? 0 : Integer.valueOf(field.getText());
+        return field.getText().isEmpty() ? 0 : Integer.parseInt(field.getText());
     }
 
     // --------------------------------------------------------------

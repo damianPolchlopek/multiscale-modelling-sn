@@ -1,4 +1,4 @@
-package code.inclusions;
+package code.newElement;
 
 import code.board.Board;
 import code.dto.Pixel;
@@ -22,11 +22,11 @@ public abstract class NewShape {
     }
 
     boolean isTwoPixelsHasDifferentId(Pixel firstPixel, Pixel secondPixel) {
-        return (board.getBoard()[firstPixel.getyPosition()][firstPixel.getxPosition()].getId() !=
-                board.getBoard()[secondPixel.getyPosition()][secondPixel.getxPosition()].getId())
+        return (board.getBoard()[firstPixel.getYPosition()][firstPixel.getXPosition()].getId() !=
+                board.getBoard()[secondPixel.getYPosition()][secondPixel.getXPosition()].getId())
                 &&
-                (board.getBoard()[firstPixel.getyPosition()][firstPixel.getxPosition()].getId() != 100 &&
-                        board.getBoard()[secondPixel.getyPosition()][secondPixel.getxPosition()].getId() != 100);
+                (board.getBoard()[firstPixel.getYPosition()][firstPixel.getXPosition()].getId() != 100 &&
+                        board.getBoard()[secondPixel.getYPosition()][secondPixel.getXPosition()].getId() != 100);
     }
 
     void fillBlackPixelOnBoard(int xPos, int yPos){
@@ -36,8 +36,8 @@ public abstract class NewShape {
     }
 
     boolean isCoordinateOnSeedBoundary(final Pixel pixel){
-        final int xPos = pixel.getxPosition();
-        final int yPos = pixel.getyPosition();
+        final int xPos = pixel.getXPosition();
+        final int yPos = pixel.getYPosition();
         final int nextXPos = xPos >= xBoardDimension ? xPos : xPos + 1;
         final int nextYPos = yPos >= yBoardDimension ? yPos : yPos + 1;
 
@@ -53,8 +53,8 @@ public abstract class NewShape {
     }
 
     private boolean isPixelOnBoundarySelectedSeed(Pixel firstPixel, Pixel secondPixel){
-        if (board.getBoard()[firstPixel.getyPosition()][firstPixel.getxPosition()].getId() == clickedPrevSeedId ||
-                board.getBoard()[secondPixel.getyPosition()][secondPixel.getxPosition()].getId() == clickedPrevSeedId)
+        if (board.getBoard()[firstPixel.getYPosition()][firstPixel.getXPosition()].getId() == clickedPrevSeedId ||
+                board.getBoard()[secondPixel.getYPosition()][secondPixel.getXPosition()].getId() == clickedPrevSeedId)
 
             return isTwoPixelsHasDifferentId(firstPixel, secondPixel);
 

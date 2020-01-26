@@ -57,7 +57,7 @@
                   <Label text="Size of Inclusions:" />
                   <TextField fx:id="inclusionSizeView" onKeyPressed="#inclusionSizeListener" />
                   <ChoiceBox fx:id="inclusionTypeView" onMouseReleased="#inclusionTypeListener" prefWidth="150.0" />
-                  <Button mnemonicParsing="false" onAction="#addInclusions" text="Add code.inclusions" />
+                  <Button mnemonicParsing="false" onAction="#addInclusions" text="Add code.newElement" />
                </children></VBox>
             <VBox prefHeight="80.0" prefWidth="100.0">
                <children>

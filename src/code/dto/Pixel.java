@@ -10,19 +10,12 @@ public class Pixel {
         this.yPosition = yPosition;
     }
 
-    public int getxPosition() {
+    public int getXPosition() {
         return xPosition;
     }
 
-    public void setxPosition(int xPosition) {
-        this.xPosition = xPosition;
-    }
-
-    public int getyPosition() {
+    public int getYPosition() {
         return yPosition;
     }
 
-    public void setyPosition(int yPosition) {
-        this.yPosition = yPosition;
-    }
 }

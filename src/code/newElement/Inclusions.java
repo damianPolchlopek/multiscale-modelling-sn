@@ -1,4 +1,4 @@
-package code.inclusions;
+package code.newElement;
 
 import code.board.Board;
 import code.dto.Pixel;
@@ -87,8 +87,8 @@ public class Inclusions extends NewShape {
     private void addCircleInclusions(final int iInclusionAmount) {
         for (int i = 0; i < iInclusionAmount; i++) {
             Pixel inclusionCoordinate = determineCoordinate();
-            addCircleInclusion(inclusionCoordinate.getxPosition(),
-                    inclusionCoordinate.getyPosition());
+            addCircleInclusion(inclusionCoordinate.getXPosition(),
+                    inclusionCoordinate.getYPosition());
         }
 
         board.redraw();
@@ -126,8 +126,8 @@ public class Inclusions extends NewShape {
     private void addSquareInclusions(final int iInclusionAmount) {
         for (int i = 0; i < iInclusionAmount; i++) {
             Pixel inclusionCoordinate = determineCoordinate();
-            addSquareInclusion(inclusionCoordinate.getxPosition(),
-                    inclusionCoordinate.getyPosition());
+            addSquareInclusion(inclusionCoordinate.getXPosition(),
+                    inclusionCoordinate.getYPosition());
         }
 
         board.redraw();

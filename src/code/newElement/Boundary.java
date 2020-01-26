@@ -1,4 +1,4 @@
-package code.inclusions;
+package code.newElement;
 
 import code.board.Board;
 import code.dto.Pixel;
@@ -56,11 +56,11 @@ public class Boundary extends NewShape {
     }
 
     private boolean isCoordinateOnSelectedSeedBoundary(Pixel firstPixel, Pixel secondPixel) {
-        return (board.getBoard()[firstPixel.getyPosition()][firstPixel.getxPosition()].getId() != clickedPrevSeedId &&
-                board.getBoard()[secondPixel.getyPosition()][secondPixel.getxPosition()].getId() == clickedPrevSeedId)
+        return (board.getBoard()[firstPixel.getYPosition()][firstPixel.getXPosition()].getId() != clickedPrevSeedId &&
+                board.getBoard()[secondPixel.getYPosition()][secondPixel.getXPosition()].getId() == clickedPrevSeedId)
                 ||
-                (board.getBoard()[firstPixel.getyPosition()][firstPixel.getxPosition()].getId() == clickedPrevSeedId &&
-                        board.getBoard()[secondPixel.getyPosition()][secondPixel.getxPosition()].getId() != clickedPrevSeedId);
+                (board.getBoard()[firstPixel.getYPosition()][firstPixel.getXPosition()].getId() == clickedPrevSeedId &&
+                        board.getBoard()[secondPixel.getYPosition()][secondPixel.getXPosition()].getId() != clickedPrevSeedId);
     }
 
 }
