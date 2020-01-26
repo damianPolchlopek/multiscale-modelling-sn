@@ -1,6 +1,6 @@
-package file.operation;
+package code.file.operation;
 
-import board.Board;
+import code.board.Board;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
@@ -35,9 +35,9 @@ public class FileOperation {
     File selectFile(FileOperationType fileOperationType){
         Stage stage = (Stage) borderPane.getScene().getWindow();
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Save file");
-        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Text file", "*.txt"),
-                new FileChooser.ExtensionFilter("BMP file", "*.bmp"));
+        fileChooser.setTitle("Save code.file");
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Text code.file", "*.txt"),
+                new FileChooser.ExtensionFilter("BMP code.file", "*.bmp"));
         if (fileOperationType == FileOperationType.Export){
             return fileChooser.showSaveDialog(stage);
         }

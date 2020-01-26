@@ -1,4 +1,4 @@
-package helper;
+package code.helper;
 
 import java.awt.*;
 import java.util.HashMap;

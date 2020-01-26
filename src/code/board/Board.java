@@ -1,6 +1,6 @@
-package board;
+package code.board;
 
-import helper.ColorFunctionality;
+import code.helper.ColorFunctionality;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;

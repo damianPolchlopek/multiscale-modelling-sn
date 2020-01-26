@@ -1,7 +1,7 @@
-package inclusions;
+package code.inclusions;
 
-import board.Board;
-import dto.Pixel;
+import code.board.Board;
+import code.dto.Pixel;
 import javafx.scene.canvas.Canvas;
 
 public class Boundary extends NewShape {

@@ -1,4 +1,4 @@
-package dto;
+package code.dto;
 
 public class Pixel {
 

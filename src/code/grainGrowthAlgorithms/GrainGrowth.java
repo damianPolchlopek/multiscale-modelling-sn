@@ -1,7 +1,7 @@
-package grainGrowthAlgorithms;
+package code.grainGrowthAlgorithms;
 
-import board.Board;
-import board.Field;
+import code.board.Board;
+import code.board.Field;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -45,22 +45,22 @@ public class GrainGrowth {
             for (int i = 0; i < board.getBoard().length; i++) {
                 for (int j = 0; j < board.getBoard()[0].length; j++) {
 
-                    Field field = board.getBoard()[i][j];
+                    final Field field = board.getBoard()[i][j];
 
                     if (checkIfFieldIsAppropriateToGrainGrowthAlgorithm(field)) {
 
-                        int xPos = field.getxPosition();
-                        int yPos = field.getyPosition();
+                        final int xPos = field.getxPosition();
+                        final int yPos = field.getyPosition();
 
-                        boolean ifFirstRuleCompleted = firstRule(xPos, yPos);
+                        final boolean ifFirstRuleCompleted = firstRule(xPos, yPos);
                         if (ifFirstRuleCompleted)
                             continue;
 
-                        boolean ifSecondRuleCompleted = secondRule(xPos, yPos);
+                        final boolean ifSecondRuleCompleted = secondRule(xPos, yPos);
                         if (ifSecondRuleCompleted)
                             continue;
 
-                        boolean ifThirdRuleCompleted = thirdRule(xPos, yPos);
+                        final boolean ifThirdRuleCompleted = thirdRule(xPos, yPos);
                         if (ifThirdRuleCompleted)
                             continue;
 
@@ -90,7 +90,7 @@ public class GrainGrowth {
 
     private int randomFieldOnBoard(int i) {
         int xRand, yRand;
-        Random random = new Random();
+        final Random random = new Random();
         xRand = random.nextInt(xBoardDimension);
         yRand = random.nextInt(yBoardDimension);
 

@@ -1,4 +1,4 @@
-package board;
+package code.board;
 
 import java.awt.*;
 

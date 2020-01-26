@@ -116,14 +116,14 @@ typings/
 # Output of 'npm pack'
 *.tgz
 
-# Yarn Integrity file
+# Yarn Integrity code.file
 .yarn-integrity
 
-# dotenv environment variables file
+# dotenv environment variables code.file
 .env
 
 
 
 
-# my file
+# my code.file
 

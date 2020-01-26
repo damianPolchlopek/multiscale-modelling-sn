@@ -1,9 +1,9 @@
-package file.operation;
+package code.file.operation;
 
-import board.Board;
-import board.Field;
-import file.FileSchema;
-import helper.ColorFunctionality;
+import code.board.Board;
+import code.board.Field;
+import code.file.FileSchema;
+import code.helper.ColorFunctionality;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;

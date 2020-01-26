@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600" minWidth="800" prefHeight="639.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Controller">
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600" minWidth="800" prefHeight="639.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="code.controller.Controller">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
@@ -52,12 +52,12 @@
             <VBox prefHeight="151.0" prefWidth="126.0">
                <children>
                   <Label text="LAB 2" />
-                  <Label text="Amount of inclusions:" />
+                  <Label text="Amount of code.inclusions:" />
                   <TextField fx:id="inclusionsAmountView" onKeyPressed="#inclusionAmountListener" />
                   <Label text="Size of Inclusions:" />
                   <TextField fx:id="inclusionSizeView" onKeyPressed="#inclusionSizeListener" />
                   <ChoiceBox fx:id="inclusionTypeView" onMouseReleased="#inclusionTypeListener" prefWidth="150.0" />
-                  <Button mnemonicParsing="false" onAction="#addInclusions" text="Add inclusions" />
+                  <Button mnemonicParsing="false" onAction="#addInclusions" text="Add code.inclusions" />
                </children></VBox>
             <VBox prefHeight="80.0" prefWidth="100.0">
                <children>

@@ -1,6 +1,6 @@
-package file.operation;
+package code.file.operation;
 
-import board.Board;
+import code.board.Board;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.WritableImage;

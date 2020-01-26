@@ -1,13 +1,13 @@
-package controller;
+package code.controller;
 
 
-import board.Board;
-import file.operation.FileExport;
-import file.operation.FileImport;
-import grainGrowthAlgorithms.GrainGrowth;
-import helper.ColorFunctionality;
-import inclusions.Boundary;
-import inclusions.Inclusions;
+import code.board.Board;
+import code.file.operation.FileExport;
+import code.file.operation.FileImport;
+import code.grainGrowthAlgorithms.GrainGrowth;
+import code.helper.ColorFunctionality;
+import code.inclusions.Boundary;
+import code.inclusions.Inclusions;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;

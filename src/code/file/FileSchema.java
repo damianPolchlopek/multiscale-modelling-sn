@@ -1,6 +1,6 @@
-package file;
+package code.file;
 
-import board.Field;
+import code.board.Field;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
